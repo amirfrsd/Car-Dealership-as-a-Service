@@ -1,9 +1,6 @@
 from flask import Flask
+from .api import owner
 
 app = Flask(__name__)
 
-
-@app.route('/')
-def show_owners():
-
-    return "Hello World!"
+app.register_blueprint(owner)
