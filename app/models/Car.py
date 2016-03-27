@@ -8,12 +8,12 @@ class Car(Base):
     __tablename__ = 'car'
 
     id = Column(Integer, primary_key=True)
-    brand = Column(String(100), nullable=False)
-    model = Column(String(100), nullable=False)
-    license_plate = Column(String(10), nullable=False)
-    color = Column(String(100), nullable=False)
+    brand = Column(String(30), nullable=False)
+    model = Column(String(30), nullable=False)
+    license_plate = Column(String(15), nullable=False)
+    color = Column(String(20), nullable=False)
     mileage = Column(Integer, nullable=False)
-    fuel = Column(String(100), nullable=False)
+    fuel = Column(String(20), nullable=False)
     price = Column(Integer, nullable=False)
     year = Column(Integer, nullable=False)
     owner_id = Column(Integer, ForeignKey('owner.id'))

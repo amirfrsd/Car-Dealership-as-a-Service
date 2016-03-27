@@ -7,6 +7,6 @@ class Client(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
-    email = Column(String(100), unique=True)
-    password = Column(String(100), nullable=False)
-    contact = Column(Integer)
+    email = Column(String(50), unique=True)
+    password = Column(String(50), nullable=False)
+    contact = Column(String(20))
