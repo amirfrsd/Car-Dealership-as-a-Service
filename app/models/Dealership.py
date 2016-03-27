@@ -11,7 +11,7 @@ class Dealership(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False)
-    contact = Column(Integer, nullable=False)
-    location = Column(String(100), nullable=False)
+    contact = Column(String(20), nullable=False)
+    location = Column(String(20), nullable=False)
     owner_id = Column(Integer, ForeignKey('owner.id'))
     cars = relationship('Car', backref='dealership', lazy='dynamic')
