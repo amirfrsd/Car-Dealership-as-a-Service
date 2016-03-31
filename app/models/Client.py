@@ -1,12 +1,11 @@
-from sqlalchemy import Column, Integer, String
-from ..db import Base
+from sqlalchemy import Column
+from .User import User
+from sqlalchemy.sql.schema import ForeignKey
 
-class Client(Base):
+
+class Client(User):
 
     __tablename__ = 'client'
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String(100))
-    email = Column(String(50), unique=True)
-    password = Column(String(50), nullable=False)
-    contact = Column(String(20))
+    id = Column(None, ForeignKey('user.id'), primary_key=True)
+    __mapper_args__ = {'polymorphic_identity': 'client'}

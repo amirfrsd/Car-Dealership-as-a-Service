@@ -1,0 +1,13 @@
+.front-heading {
+    font-size: 3rem;
+}
+
+.hero {
+	background: transparent;
+}
+
+hr {
+	margin-top: 0;
+	margin-left: 25%;
+	width: 50%;
+}

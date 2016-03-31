@@ -3,8 +3,45 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Car Dealership</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<script type="text/javascript" src="static/bower_components/react/react.min.js"></script>
+	<script type="text/javascript" src="static/bower_components/react/react-dom.min.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.0.16/css/bulma.min.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/style.css">
+	
 </head>
 <body>
-	<h1>Index page</h1>
+	<header class="header">
+		<div class="container">
+			<div class="header-left">
+				<a href="/" class="header-item">
+					<img src="static/img/logo.png" alt="Logo">
+				</a>
+			</div>
+		</div>
+	</header>
+	<div class="columns">
+		<div class="column">
+			<div class="hero is-large">
+				<div class="hero-content">
+					<div class="container">
+						<h1 class="title is-1">
+							Car Dealership
+						</h1>
+						<hr>
+						<h2 class="subtitle is-2">
+							as a service
+						</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="column">
+			<div id="index"></div>
+		</div>
+	</div>
+	<script type="text/javascript" src="static/js/index.js"></script>
 </body>
 </html>
