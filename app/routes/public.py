@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template
 
+
 public = Blueprint('public_route', __name__, url_prefix="")
 
 

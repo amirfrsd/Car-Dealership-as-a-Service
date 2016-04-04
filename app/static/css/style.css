@@ -2,7 +2,8 @@
     font-size: 3rem;
 }
 
-.hero {
+
+.hero { /*remove this*/
 	background: transparent;
 }
 
@@ -10,4 +11,27 @@ hr {
 	margin-top: 0;
 	margin-left: 25%;
 	width: 50%;
+}
+
+.front {
+    margin-top: 25vh;
+    text-align: center;
+}
+
+.center {
+	text-align: center;
+}
+
+.login-box {
+    border-radius: 05px 50px;
+    border: 2px solid black;
+    padding-bottom: 15vh;
+    padding-top: 10vh;
+    margin-top: 10vh;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.client-owner {
+	margin: 15px;
 }
