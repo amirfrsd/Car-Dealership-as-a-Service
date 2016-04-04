@@ -1,16 +1,15 @@
-from sqlalchemy import Column, Integer, String
-from ..db import Base
+from sqlalchemy import Column
+from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.orm import relationship
 from .Dealership import Dealership
+from .User import User
 
-class Owner(Base):
+
+class Owner(User):
 
     __tablename__ = 'owner'
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String(100), nullable=False)
-    email = Column(String(50), nullable=False, unique=True)
-    password = Column(String(50), nullable=False)
-    contact = Column(Integer)
+    id = Column(None, ForeignKey('user.id'), primary_key=True)
+    __mapper_args__ = {'polymorphic_identity': 'owner'}
     dealerships = relationship('Dealership', backref='owner', lazy='dynamic')
     cars = relationship('Car', backref='owner', lazy='dynamic')
