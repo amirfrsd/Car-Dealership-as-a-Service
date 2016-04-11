@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 var RegisterForm = React.createClass({
 
@@ -39,11 +38,17 @@ var RegisterForm = React.createClass({
 
 	handleChange: function(type, e){
 		if(type == 'email')
-			this.setState({email: e.target.value});
+			this.setState({
+				email: e.target.value
+			});
 		else if(type == 'name')
-			this.setState({name: e.target.value})
+			this.setState({
+				name: e.target.value
+			})
 		else{
-			this.setState({password: e.target.value});	
+			this.setState({
+				password: e.target.value
+			});	
 			this.validatePassword();
 		}
 	},
@@ -63,18 +68,10 @@ var RegisterForm = React.createClass({
 		  		password: this.state.password,
 		  		type: this.state.client ? 'client' : 'owner'
 		  	}),
-			complete: function(xhr, textStatus) {
-			    //called when complete
-			    console.log('api called');
-			},
 			success: function(data, textStatus, xhr) {
 			    //called when successful
 				console.log(data);
 			},
-			error: function(xhr, textStatus, errorThrown) {
-			    //called when there is an error
-			    console.log(xhr);
-			}
 		});
 	},
 	
@@ -140,7 +137,7 @@ var RegisterForm = React.createClass({
 							 		required
 							 	/>
 							  	<i className="fa fa-lock"></i>
-							  	{this.matchPassword}
+							  	
 							</p>
 							<p className="control is-grouped is-pulled-right">
 							  	<button type="submit" className="button is-success">Register</button>

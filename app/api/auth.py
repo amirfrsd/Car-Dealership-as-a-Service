@@ -50,9 +50,11 @@ def login():
 
     if not user or not user.check_password(json_data['password']):
         return jsonify({
-            'result': 'unauthorized'
+            'success': False
         })
 
     return jsonify({
-        'result': 'success'
+        'success': True,
+        'id': user.id,
+        'type': user.user_type
     })

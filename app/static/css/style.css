@@ -2,11 +2,6 @@
     font-size: 3rem;
 }
 
-
-.hero { /*remove this*/
-	background: transparent;
-}
-
 hr {
 	margin-top: 0;
 	margin-left: 25%;
@@ -29,9 +24,25 @@ hr {
     padding-top: 10vh;
     margin-top: 10vh;
     text-align: center;
+    background-color: grey;
     background-color: rgba(0, 0, 0, 0.03);
 }
 
 .client-owner {
 	margin: 15px;
+}
+
+.page {
+    margin-top: 5vh;
+}
+
+p strong {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    margin: 1vh;
+}
+
+.profile-info {
+    padding-left: 2vh;
 }
