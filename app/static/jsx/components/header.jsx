@@ -5,6 +5,18 @@ var Header = React.createClass({
 
 	render: function() {
 		
+		let cars;
+		let dealerships;
+
+		if(this.props.params.type == 'owner'){
+			cars = 	<Link to={'/'+this.props.params.type+'/'+this.props.params.id+'/cars'} className="header-tab" activeClassName="is-active">Cars</Link>;
+			dealerships = <Link to={'/'+this.props.params.type+'/'+this.props.params.id+'/dealerships'} className="header-tab"activeClassName="is-active">Dealerships</Link>;
+		}
+		else{
+			cars = <div/>
+			dealerships = <div/>
+		}
+
 		return (
 			<header className="header">
 				<div className="container">
@@ -20,21 +32,15 @@ var Header = React.createClass({
 							>Profile
 						</Link>
 
-						{this.props.params.type == 'client'? 
-							<Link 
-								to={'/'+this.props.params.type+'/'+this.props.params.id+'/search'} 
-								className="header-tab" 
-								activeClassName="is-active"
-								>Search
-							</Link>
-							:
-							<Link 
-								to={'/'+this.props.params.type+'/'+this.props.params.id+'/search'} 
-								className="header-tab"
-								activeClassName="is-active"
-								>Something
-							</Link>
-						}
+						{dealerships}
+						{cars}
+
+						<Link 
+							to={'/'+this.props.params.type+'/'+this.props.params.id+'/search'} 
+							className="header-tab" 
+							activeClassName="is-active"
+							>Search
+						</Link>
 					</div>
 				</div>
 			</header>
