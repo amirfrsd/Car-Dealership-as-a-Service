@@ -1,14 +1,17 @@
 from flask import Blueprint, jsonify, request
-from ..models import Client
+from ..models import Client, Owner
 from ..db import session
 
-client = Blueprint('client_api', __name__, url_prefix="/api/v1/client")
+profile = Blueprint('profile_api', __name__, url_prefix="/api/v1")
 
 
-@client.route('/<int:client_id>', methods=['GET'])
-def get_profile(client_id):
+@profile.route('/<type>/<int:id>', methods=['GET'])
+def get_profile(type, id):
 
-    user = session.query(Client).get(client_id)
+    if(type == 'client'):
+        user = session.query(Client).get(id)
+    else:
+        user = session.query(Owner).get(id)
 
     if not user:
         return jsonify({
@@ -25,12 +28,15 @@ def get_profile(client_id):
     })
 
 
-@client.route('/<int:client_id>', methods=['PUT'])
-def update_profile(client_id):
+@profile.route('/<type>/<int:id>', methods=['PUT'])
+def update_profile(type, id):
 
     json_data = request.json
 
-    user = session.query(Client).get(client_id)
+    if(type == 'client'):
+        user = session.query(Client).get(id)
+    else:
+        user = session.query(Owner).get(id)
 
     if not user:
         return jsonify({
@@ -46,11 +52,14 @@ def update_profile(client_id):
     })
 
 
-@client.route('/<int:client_id>/password', methods=['PUT'])
-def change_password(client_id):
+@profile.route('/<type>/<int:id>/password', methods=['PUT'])
+def change_password(type, id):
     json_data = request.json
 
-    user = session.query(Client).get(client_id)
+    if(type == 'client'):
+        user = session.query(Client).get(id)
+    else:
+        user = session.query(Owner).get(id)
 
     if not user or not user.check_password(json_data['password']):
         return jsonify({
@@ -64,17 +73,23 @@ def change_password(client_id):
     })
 
 
-@client.route('/<int:client_id>', methods=['DELETE'])
-def delete_password(client_id):
+@profile.route('/<type>/<int:id>', methods=['DELETE'])
+def delete_password(type, id):
 
     json_data = request.json
 
-    user = session.query(Client).get(client_id)
+    if(type == 'client'):
+        user = session.query(Client).get(id)
+    else:
+        user = session.query(Owner).get(id)
 
     if not user or not user.check_password(json_data['password']):
         return jsonify({
             'success': False
         })
+
+    session.delete(user)
+    session.commit()
 
     return jsonify({
         'success': True
