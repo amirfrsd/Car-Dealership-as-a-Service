@@ -45,8 +45,8 @@ var LoginForm = React.createClass({
 				type: this.state.client ? 'client' : 'owner'
 			}),
 			success: function(data){
-				
-				browserHistory.push('/'+data.type+'/'+data.id);
+				if(data.success)
+					browserHistory.push('/'+data.type+'/'+data.id);
 			}
 		});
 

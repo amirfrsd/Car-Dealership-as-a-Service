@@ -44,3 +44,38 @@ def update_profile(client_id):
     return jsonify({
         'success': True
     })
+
+
+@client.route('/<int:client_id>/password', methods=['PUT'])
+def change_password(client_id):
+    json_data = request.json
+
+    user = session.query(Client).get(client_id)
+
+    if not user or not user.check_password(json_data['password']):
+        return jsonify({
+            'success': False
+        })
+
+    user.hash_password(json_data['newPassword'])
+
+    return jsonify({
+        'success': True
+    })
+
+
+@client.route('/<int:client_id>', methods=['DELETE'])
+def delete_password(client_id):
+
+    json_data = request.json
+
+    user = session.query(Client).get(client_id)
+
+    if not user or not user.check_password(json_data['password']):
+        return jsonify({
+            'success': False
+        })
+
+    return jsonify({
+        'success': True
+    })

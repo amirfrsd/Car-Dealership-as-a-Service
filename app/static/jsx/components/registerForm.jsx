@@ -57,6 +57,8 @@ var RegisterForm = React.createClass({
 		
 		e.preventDefault();
 		
+		let self = this;
+
 		let serverRequest = $.ajax({
 		  	url: '/api/v1/register',
 		  	type: 'POST',
@@ -68,9 +70,10 @@ var RegisterForm = React.createClass({
 		  		password: this.state.password,
 		  		type: this.state.client ? 'client' : 'owner'
 		  	}),
-			success: function(data, textStatus, xhr) {
-			    //called when successful
-				console.log(data);
+			success: function(data) {
+				if(data.success){
+					self.props.login(true);
+				}
 			},
 		});
 	},

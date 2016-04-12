@@ -28,12 +28,12 @@ def register():
     try:
         session.add(newUser)
         session.commit()
-        status = 'success'
+        status = True
     except:
-        status = 'email already in use'
+        status = False
 
     return jsonify({
-        'result': status
+        'success': status
     })
 
 

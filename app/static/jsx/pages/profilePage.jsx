@@ -2,13 +2,14 @@ import React from 'react';
 import Header from '../components/header.jsx';
 import Profile from '../components/profile.jsx';
 import EditProfile from '../components/editProfile.jsx';
+import ChangePassword from '../components/changePassword.jsx';
 
 var ProfilePage = React.createClass({
 
 	getInitialState: function() {
 		return {
 			data: {},
-			editProfile: false,
+			pageType: 'profile',
 			changePassword: false,
 		};
 	},
@@ -36,22 +37,30 @@ var ProfilePage = React.createClass({
 		});
 	},
 
-	isEditProfile: function() {
+	changePageType: function(newState) {
 		this.setState({
-			editProfile: !this.state.editProfile
+			pageType: newState
 		})
 	},
 
 	render: function() {
+		let page;
+
+		if(this.state.pageType == 'changePassword'){
+			page = <ChangePassword data={this.state.data} changePage={this.changePageType} params={this.props.params} />
+		}
+		else if(this.state.pageType == 'edit'){
+			page = <EditProfile data={this.state.data} changePage={this.changePageType} params={this.props.params} refreshInfo={this.getProfileInfo} />
+		}
+		else{
+			page = <Profile data={this.state.data} changePage={this.changePageType} params={this.props.params} /> 
+		}
+
 		return (
 			<div>
 				<Header params={this.props.params}/>
 				<div className="columns">
-					{!this.state.editProfile ? 
-						<Profile data={this.state.data} isEdit={this.isEditProfile} params={this.props.params} /> 
-					: 
-						<EditProfile data={this.state.data} isEdit={this.isEditProfile} params={this.props.params} refreshInfo={this.getProfileInfo} />
-					}
+					{page}
 				</div>
 			</div>
 		);
