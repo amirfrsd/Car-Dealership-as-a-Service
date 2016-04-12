@@ -28,12 +28,12 @@ def register():
     try:
         session.add(newUser)
         session.commit()
-        status = 'success'
+        status = True
     except:
-        status = 'email already in use'
+        status = False
 
     return jsonify({
-        'result': status
+        'success': status
     })
 
 
@@ -50,9 +50,11 @@ def login():
 
     if not user or not user.check_password(json_data['password']):
         return jsonify({
-            'result': 'unauthorized'
+            'success': False
         })
 
     return jsonify({
-        'result': 'success'
+        'success': True,
+        'id': user.id,
+        'type': user.user_type
     })

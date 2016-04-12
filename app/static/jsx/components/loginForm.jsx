@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {browserHistory} from 'react-router';
 
 var LoginForm = React.createClass({
 
@@ -12,7 +12,7 @@ var LoginForm = React.createClass({
 	},
 
 	handleClick: function(type){
-		if(type.localeCompare('client')==0){
+		if(type == 'client'){
 			this.setState({
 				client: true,
 			})
@@ -25,7 +25,7 @@ var LoginForm = React.createClass({
 	},
 
 	handleChange: function(type, e){
-		if(type.localeCompare('email')==0)
+		if(type == 'email')
 			this.setState({email: e.target.value});
 		else
 			this.setState({password: e.target.value});
@@ -45,7 +45,8 @@ var LoginForm = React.createClass({
 				type: this.state.client ? 'client' : 'owner'
 			}),
 			success: function(data){
-				console.log(data);
+				if(data.success)
+					browserHistory.push('/'+data.type+'/'+data.id);
 			}
 		});
 
@@ -78,16 +79,18 @@ var LoginForm = React.createClass({
 							  		placeholder="Email"
 							  		value={this.state.email}
 							  		onChange={this.handleChange.bind(null, 'email')}
+							  		required
 							  	/>
 							  	<i className="fa fa-envelope"></i>
 							</p>
 							<p className="control has-icon">
 							 	<input 
-							 		className="input" 
-							 		type="password" 
+							 		className="input"
+							 		type="password"
 							 		placeholder="Password"
 							 		value={this.state.password}
 							 		onChange={this.handleChange.bind(null, 'password')}
+							 		required
 							 	/>
 							  	<i className="fa fa-lock"></i>
 							</p>
