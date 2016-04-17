@@ -7,7 +7,7 @@ dealership = Blueprint(
 
 
 @dealership.route('/owner/<int:id>/dealerships', methods=['GET'])
-def get_dealerships(id):
+def get_my_dealerships(id):
 
     owner = session.query(Owner).get(id)
 
@@ -24,10 +24,10 @@ def get_dealerships(id):
     for dealership in dealerships:
         response.append(
             {
-            'id': dealership.id,
-            'name': dealership.name,
-            'location': dealership.location,
-            'contact': dealership.contact
+                'id': dealership.id,
+                'name': dealership.name,
+                'location': dealership.location,
+                'contact': dealership.contact
             }
         )
 
@@ -37,7 +37,30 @@ def get_dealerships(id):
     })
 
 
-@dealership.route('s', methods=['POST'])
+@dealership.route('/dealerships', methods=['GET'])
+def get_all_dealerhips():
+
+    dealerships = session.query(Dealership)
+
+    response = []
+
+    for dealership in dealerships:
+        response.append(
+            {
+                'id': dealership.id,
+                'name': dealership.name,
+                'location': dealership.location,
+                'contact': dealership.contact
+            }
+        )
+
+    return jsonify({
+        'success': True,
+        'dealerships': response
+    })
+
+
+@dealership.route('/dealerships', methods=['POST'])
 def create_dealership():
 
     json_data = request.json
