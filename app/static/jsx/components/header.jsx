@@ -1,5 +1,5 @@
-import React from 'react';
-import {Link} from 'react-router';
+var React = require('react');
+var {Link} = require('react-router');
 
 var Header = React.createClass({
 

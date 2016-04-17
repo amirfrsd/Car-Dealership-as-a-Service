@@ -1,5 +1,5 @@
-import React from 'react';
-import {browserHistory} from 'react-router';
+var React = require('react');
+var {browserHistory} = require('react-router');
 
 var LoginForm = React.createClass({
 

@@ -1,52 +1,49 @@
-var React = require('react');
-var {browserHistory} = require('react-router');
+var React =require('react');
 
-var EditProfile = React.createClass({
+var CreateDealership = React.createClass({
 
 	getInitialState: function() {
 		return {
-			name: this.props.data.name,
-			email: this.props.data.email,
-			contact: this.props.data.contact
+			name: '',
+			location: '',
+			contact: '' 
 		};
 	},
 
-	handleChange: function(type, e){
+	handleChange: function(type, e) {
 		if(type == 'name')
 			this.setState({
 				name: e.target.value
 			});
-		else if(type == 'email')
+		else if(type == 'location')
 			this.setState({
-				email: e.target.value
-			});
-		else{
+				location: e.target.value
+			})
+		else
 			this.setState({
-				contact: e.target.value 
-			});
-		}
-		
+				contact: e.target.value
+			})
 	},
 
-	saveChanges: function(e){
-
+	createDealership: function(e) {
 		e.preventDefault();
 		
 		let self = this;
 		let serverRequest = $.ajax({
-		  	url: '/api/v1/'+this.props.params.type+'/'+this.props.params.id,
-		  	type: 'PUT',
+		  	url: '/api/v1/dealerships',
+		  	type: 'POST',
 		  	dataType: 'json',
 		  	contentType: 'application/json',
 		  	data: JSON.stringify({
+		  		id: this.props.params.id,
 		  		name: this.state.name,
-		  		email: this.state.email,
-		  		contact: this.state.contact,
+		  		location: this.state.location,
+		  		contact: this.state.contact
 		  	}),
 			success: function(data) {
+				console.log(data);
 				if(data.success){
-					self.props.refreshInfo();
-					self.props.changePage('profile');
+					self.props.handleClick();
 				}
 			},
 		});
@@ -54,12 +51,12 @@ var EditProfile = React.createClass({
 
 	render: function() {
 		return (
-			<div className="column is-4 is-offset-2 page">
-				<h1 className="title">Edit Profile</h1>
-				<form onSubmit={this.saveChanges} >
+			<div className="is-half">
+				<h1 className="title" >Create dealership</h1>
+				<form onSubmit={this.createDealership} >
 					<div className="control is-grouped">
-						<button className="button" type="submit" >Save Changes</button>
-						<button className="button" onClick={this.props.changePage.bind(null, 'profile')}>Back</button>
+						<button className="button" type="submit">Create dealership</button>
+						<button className="button" onClick={this.props.handleClick} >Back</button>
 					</div>
 					<div className="control is-horizontal">
 						<div className="control-label">
@@ -77,15 +74,15 @@ var EditProfile = React.createClass({
 					</div>
 					<div className="control is-horizontal">
 						<div className="control-label">
-						    <label className="label">Email</label>
+						    <label className="label">Location</label>
 						</div>
 						<div className="control">
 						    <input 
 						    	className="input" 
-						    	type="email" 
-						    	value={this.state.email} 
-						    	placeholder="Email"
-						    	onChange={this.handleChange.bind(null, 'email')}
+						    	type="text" 
+						    	value={this.state.location}
+						    	placeholder="Location"
+						    	onChange={this.handleChange.bind(null, 'location')}
 						    />
 						</div>
 					</div>
@@ -97,7 +94,7 @@ var EditProfile = React.createClass({
 						    <input 
 						    	className="input" 
 						    	type="text" 
-						    	value={this.state.contact} 
+						    	value={this.state.contact}
 						    	placeholder="Contact"
 						    	onChange={this.handleChange.bind(null, 'contact')}
 						    />
@@ -110,4 +107,4 @@ var EditProfile = React.createClass({
 
 });
 
-module.exports = EditProfile;
+module.exports = CreateDealership;

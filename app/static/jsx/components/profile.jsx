@@ -1,5 +1,5 @@
-import React from 'react';
-import DeleteModal from './deleteModal.jsx';
+var React = require('react');
+var DeleteModal = require('./deleteModal.jsx');
 
 var Profile = React.createClass({
 

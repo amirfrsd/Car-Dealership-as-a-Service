@@ -1,8 +1,8 @@
-import React from 'react';
-import LandingHeader from '../components/landingHeader.jsx';
-import LandingTitle from '../components/landingTitle.jsx';
-import LoginForm from '../components/loginForm.jsx';
-import RegisterForm from '../components/registerForm.jsx';
+var React = require('react');
+var LandingHeader = require('../components/landingHeader.jsx');
+var LandingTitle = require('../components/landingTitle.jsx');
+var LoginForm = require('../components/loginForm.jsx');
+var RegisterForm = require('../components/registerForm.jsx');
 
 var LandingPage = React.createClass({
 
