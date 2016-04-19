@@ -1,5 +1,5 @@
-import React from 'react';
-import {browserHistory} from 'react-router';
+var React = require('react');
+var {browserHistory} = require('react-router');
 
 var EditProfile = React.createClass({
 
@@ -58,7 +58,7 @@ var EditProfile = React.createClass({
 				<h1 className="title">Edit Profile</h1>
 				<form onSubmit={this.saveChanges} >
 					<div className="control is-grouped">
-						<button className="button" >Save Changes</button>
+						<button className="button" type="submit" >Save Changes</button>
 						<button className="button" onClick={this.props.changePage.bind(null, 'profile')}>Back</button>
 					</div>
 					<div className="control is-horizontal">

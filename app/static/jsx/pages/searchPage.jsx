@@ -1,5 +1,5 @@
-import React from 'react';
-import Header from '../components/header.jsx';
+var React = require('react');
+var Header = require('../components/header.jsx');
 
 var SearchPage = React.createClass({
 

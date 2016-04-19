@@ -1,8 +1,8 @@
-import React from 'react';
-import Header from '../components/header.jsx';
-import Profile from '../components/profile.jsx';
-import EditProfile from '../components/editProfile.jsx';
-import ChangePassword from '../components/changePassword.jsx';
+var React = require('react');
+var Header = require('../components/header.jsx');
+var Profile = require('../components/profile.jsx');
+var EditProfile = require('../components/editProfile.jsx');
+var ChangePassword = require('../components/changePassword.jsx');
 
 var ProfilePage = React.createClass({
 
@@ -25,10 +25,7 @@ var ProfilePage = React.createClass({
 			type: 'GET',
 			dataType: 'json',
 			contentType: 'application/json',
-			data: JSON.stringify({
-				id: 1,
-				type: 'client'
-			}),
+			
 			success: function(data) {
 				self.setState({
 					data: data

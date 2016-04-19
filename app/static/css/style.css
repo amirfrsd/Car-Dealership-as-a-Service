@@ -46,3 +46,7 @@ p strong {
 .profile-info {
     padding-left: 2vh;
 }
+
+.clickable {
+    cursor: pointer;
+}
