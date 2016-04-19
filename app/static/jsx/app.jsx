@@ -1,11 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {Router, Route, browserHistory} from 'react-router';
-import LandingPage from './pages/landingPage.jsx';
-import ProfilePage from './pages/profilePage.jsx';
-import SearchPage from './pages/searchPage.jsx';
-import DealershipsPage from './pages/dealershipsPage.jsx';
-import CarsPage from './pages/carsPage.jsx';
+var React = require('react');
+var ReactDOM = require('react-dom');
+var {Router, Route, browserHistory} = require('react-router');
+var LandingPage = require('./pages/landingPage.jsx');
+var ProfilePage = require('./pages/profilePage.jsx');
+var SearchPage = require('./pages/searchPage.jsx');
+var DealershipPage = require('./pages/dealershipPage.jsx');
+var CarPage = require('./pages/carPage.jsx');
 
 
 var App = React.createClass({
@@ -15,8 +15,8 @@ var App = React.createClass({
         return (
             <Router history={browserHistory}>
                 <Route path="/" component={LandingPage}/>
-                <Route path="/owner/:id/dealerships" component={DealershipsPage}/>
-                <Route path="/owner/:id/cars" component={CarsPage}/>
+                <Route path="/owner/:id/dealerships" component={DealershipPage}/>
+                <Route path="/owner/:id/cars" component={CarPage}/>
 			    <Route path="/:type/:id" component={ProfilePage}/>
 			    <Route path="/:type/:id/search" component={SearchPage}/>
             </Router>

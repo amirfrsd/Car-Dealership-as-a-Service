@@ -1,16 +1,16 @@
-var React =require('react');
+var React = require('react');
 
-var CreateDealership = React.createClass({
+var EditDealership = React.createClass({
 
 	getInitialState: function() {
 		return {
-			name: '',
-			location: '',
-			contact: '' 
+			name: this.props.dealership.name,
+			location: this.props.dealership.location,
+			contact: this.props.dealership.contact 
 		};
 	},
 
-	handleChange: function(type, e) {
+	handleChange: function(type, e){
 		if(type == 'name')
 			this.setState({
 				name: e.target.value
@@ -18,32 +18,34 @@ var CreateDealership = React.createClass({
 		else if(type == 'location')
 			this.setState({
 				location: e.target.value
-			})
-		else
+			});
+		else{
 			this.setState({
-				contact: e.target.value
-			})
+				contact: e.target.value 
+			});
+		}
+		
 	},
 
-	createDealership: function(e) {
+	saveChanges: function(e){
+
 		e.preventDefault();
 		
 		let self = this;
 		let serverRequest = $.ajax({
-		  	url: '/api/v1/dealerships',
-		  	type: 'POST',
+		  	url: '/api/v1/dealership/'+this.props.dealership.id,
+		  	type: 'PUT',
 		  	dataType: 'json',
 		  	contentType: 'application/json',
 		  	data: JSON.stringify({
-		  		id: this.props.params.id,
 		  		name: this.state.name,
 		  		location: this.state.location,
-		  		contact: this.state.contact
+		  		contact: this.state.contact,
 		  	}),
 			success: function(data) {
-				console.log(data);
 				if(data.success){
-					self.props.changePage('list');
+					self.props.refreshInfo(self.props.dealership.id);
+					self.props.changePage('profile');
 				}
 			},
 		});
@@ -51,11 +53,11 @@ var CreateDealership = React.createClass({
 
 	render: function() {
 		return (
-			<div className="is-half">
-				<h1 className="title" >Create dealership</h1>
+			<div>
+				<h1 className="title">Edit Profile</h1>
 				<div className="control is-grouped">
-					<button className="button" onClick={this.createDealership}>Create dealership</button>
-					<button className="button" onClick={this.props.changePage.bind(null, 'list')} >Back</button>
+					<button className="button" onClick={this.saveChanges} >Save Changes</button>
+					<button className="button" onClick={this.props.changePage.bind(null, 'profile')}>Back</button>
 				</div>
 				<div className="control is-horizontal">
 					<div className="control-label">
@@ -79,7 +81,7 @@ var CreateDealership = React.createClass({
 					    <input 
 					    	className="input" 
 					    	type="text" 
-					    	value={this.state.location}
+					    	value={this.state.location} 
 					    	placeholder="Location"
 					    	onChange={this.handleChange.bind(null, 'location')}
 					    />
@@ -93,7 +95,7 @@ var CreateDealership = React.createClass({
 					    <input 
 					    	className="input" 
 					    	type="text" 
-					    	value={this.state.contact}
+					    	value={this.state.contact} 
 					    	placeholder="Contact"
 					    	onChange={this.handleChange.bind(null, 'contact')}
 					    />
@@ -105,4 +107,4 @@ var CreateDealership = React.createClass({
 
 });
 
-module.exports = CreateDealership;
+module.exports = EditDealership;

@@ -1,9 +1,10 @@
 var React = require('react');
 
+
 var DealershipRow = React.createClass({
 
 	handleClick: function(id) {
-		console.log(id);
+		this.props.changePage('profile', id);
 	},
 
 	render: function() {

@@ -85,3 +85,44 @@ def create_dealership():
     return jsonify({
         'success': True
     })
+
+
+@dealership.route('/dealership/<int:id>', methods=['GET'])
+def get_dealership(id):
+
+    dealership = session.query(Dealership).get(id)
+
+    if not dealership:
+        return jsonify({
+            'success': False
+        })
+
+    return jsonify({
+        'success': True,
+        'id': dealership.id,
+        'name': dealership.name,
+        'location': dealership.location,
+        'contact': dealership.contact,
+        'owner_id': dealership.owner_id
+    })
+
+
+@dealership.route('/dealership/<int:id>', methods=['PUT'])
+def edit_dealerhip(id):
+    json_data = request.json
+
+    dealership = session.query(Dealership).get(id)
+
+    if not dealership:
+        return jsonify({
+            'success': False
+        })
+
+    dealership.name = json_data['name']
+    dealership.location = json_data['location']
+    dealership.contact = json_data['contact']
+    session.commit()
+
+    return jsonify({
+        'success': True
+    })

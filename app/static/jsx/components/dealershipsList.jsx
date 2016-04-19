@@ -69,10 +69,12 @@ var DealershipsList = React.createClass({
 	},
 
 	render: function() {
+		let self = this;
+
 		return (
 			<div>
 				<div className="control is-grouped">
-					<button className="button" onClick={this.props.handleClick} >Create new dealership</button>
+					<button className="button" onClick={this.props.changePage.bind(null, 'create')} >Create new dealership</button>
 					<div className="control has-addons">
 					
 					<button 
@@ -106,7 +108,7 @@ var DealershipsList = React.createClass({
 					</thead>
 					<tbody>
 						{this.state.data.dealerships.map(function(dealership){
-							return <DealershipRow key={dealership.id} data={dealership} />
+							return <DealershipRow key={dealership.id} data={dealership} changePage={self.props.changePage} params={self.props.params} />
 						})}
 					</tbody>
 				</table>
