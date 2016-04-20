@@ -14,7 +14,9 @@ var CarPage = React.createClass({
 				id: this.props.params.id
 			},
 			pageType: 'list',
-			carData: {} 
+			carData: {
+				dealerships: []
+			} 
 		};
 	},
 
@@ -27,7 +29,6 @@ var CarPage = React.createClass({
 			contentType: 'application/json',
 			
 			success: function(data) {
-				
 				if(data.success){
 					self.setState({
 						carData: data
@@ -54,7 +55,9 @@ var CarPage = React.createClass({
 		else{
 			this.setState({
 				pageType: newPage,
-				carData: {}
+				carData: {
+					dealerships:[]
+				}
 			});
 		}
 	},

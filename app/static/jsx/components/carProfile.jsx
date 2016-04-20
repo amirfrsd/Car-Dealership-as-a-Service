@@ -1,4 +1,5 @@
 var React = require('react');
+var CarTag = require('./carTag.jsx');
 
 var CarProfile = React.createClass({
 
@@ -18,6 +19,11 @@ var CarProfile = React.createClass({
 				<p><strong>Fuel</strong><span className="profile-info"> {this.props.car.fuel}</span></p>
 				<p><strong>Year</strong><span className="profile-info"> {this.props.car.year}</span></p>
 				<p><strong>Price</strong><span className="profile-info"> {this.props.car.price}</span></p>
+				<p><strong>Dealerships</strong>
+					{this.props.car.dealerships.map(function(dealership){
+						return 	<CarTag key={dealership.id} dealership={dealership}/>
+					})}
+				</p>
 			</div>
 		);
 	}
