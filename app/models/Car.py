@@ -1,6 +1,8 @@
 from sqlalchemy import Column, Integer, String
-from ..db import Base
 from sqlalchemy.sql.schema import ForeignKey
+from sqlalchemy.orm import relationship
+from ..db import Base
+from .Dealership import association_table
 
 
 class Car(Base):
@@ -8,13 +10,16 @@ class Car(Base):
     __tablename__ = 'car'
 
     id = Column(Integer, primary_key=True)
-    brand = Column(String(30), nullable=False)
-    model = Column(String(30), nullable=False)
-    license_plate = Column(String(15), nullable=False)
-    color = Column(String(20), nullable=False)
-    mileage = Column(Integer, nullable=False)
-    fuel = Column(String(20), nullable=False)
-    price = Column(Integer, nullable=False)
-    year = Column(Integer, nullable=False)
+    brand = Column(String(30))
+    model = Column(String(30))
+    license_plate = Column(String(15))
+    color = Column(String(20))
+    mileage = Column(Integer)
+    fuel = Column(String(20))
+    price = Column(Integer)
+    year = Column(Integer)
     owner_id = Column(Integer, ForeignKey('owner.id'))
-    dealership_id = Column(Integer, ForeignKey('dealership.id'))
+
+    owner = relationship('Owner')
+    dealership = relationship(
+        'Dealership', secondary=association_table, lazy='dynamic')

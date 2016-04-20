@@ -50,3 +50,7 @@ p strong {
 .clickable {
     cursor: pointer;
 }
+
+.tags {
+    margin-left: 1vh;
+}
