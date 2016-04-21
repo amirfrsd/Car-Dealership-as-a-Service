@@ -1,7 +1,20 @@
 var React = require('react');
 var CarTag = require('./carTag.jsx');
+var DeleteModal = require('./deleteModal.jsx');
 
 var CarProfile = React.createClass({
+	
+	getInitialState: function() {
+		return {
+			isDeleting: false 
+		};
+	},
+
+	handleClick: function() {
+		this.setState({
+			isDeleting: !this.state.isDeleting
+		})
+	},
 
 	render: function() {
 		return (
@@ -10,6 +23,7 @@ var CarProfile = React.createClass({
 				<div className="control is-grouped">
 					<button className="button" onClick={this.props.changePage.bind(null, 'edit')}>Edit Car</button>
 					<button className="button" onClick={this.props.changePage.bind(null, 'list')}>Back</button>
+					<button className="button is-danger" onClick={this.handleClick} >Delete Car</button>
 				</div>
 				<p><strong>Brand</strong><span className="profile-info"> {this.props.car.brand}</span></p>
 				<p><strong>Model</strong><span className="profile-info"> {this.props.car.model}</span></p>
@@ -24,6 +38,7 @@ var CarProfile = React.createClass({
 						return 	<CarTag key={dealership.id} dealership={dealership}/>
 					})}
 				</p>
+				<DeleteModal isDeleting={this.state.isDeleting} handleClick={this.handleClick} carID={this.props.car.id} params={this.props.params} />
 			</div>
 		);
 	}

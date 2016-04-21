@@ -1,4 +1,6 @@
 var React = require('react');
+var CarTag = require('./carTag.jsx');
+var DealershipSelection = require('./dealershipSelection.jsx');
 
 var CreateCar = React.createClass({
 	
@@ -51,10 +53,11 @@ var CreateCar = React.createClass({
 			this.setState({
 				year: e.target.value
 			});
-		else
+		else{
 			this.setState({
 				selected: e.target.value
 			});
+		}
 	},
 
 	addCar: function(e) {
@@ -62,8 +65,8 @@ var CreateCar = React.createClass({
 		let self = this;
 		
 		let dealershipList = [];
-		this.state.myDealerships.map(function(index){
-			dealershipList.push(self.state.dealerships[index].id);
+		this.state.myDealerships.map(function(dealership){
+			dealershipList.push(dealership.id);
 		});	
 
 		let serverRequest = $.ajax({
@@ -103,7 +106,7 @@ var CreateCar = React.createClass({
 			success: function(data) {
 				if(data.success){
 					self.setState({
-						dealerships: data.dealerships
+						dealerships: data.dealerships,
 					});
 				}
 			}
@@ -111,19 +114,38 @@ var CreateCar = React.createClass({
 	},
 
 	addDealership: function() {
-		let array = this.state.myDealerships;
-		array.push(parseInt(this.state.selected));
+		
+		let myArray = this.state.myDealerships;
+		let allArray = this.state.dealerships;
+
+		myArray.push(this.state.dealerships[this.state.selected]);
+		allArray.splice(this.state.selected, 1);
+		
 		this.setState({
-			myDealerships: array
-		});
+			myDealerships: myArray,
+			dealerships: allArray,
+			selected: 0
+		});	
 	},
 
 	deleteDealership: function(index) {
-		let array = this.state.myDealerships;
-		array.splice(array.indexOf(index), 1);
+
+		let myArray = this.state.myDealerships;
+		let allArray = this.state.dealerships;
+
+		allArray.push(myArray[index]);
+		myArray.splice(index, 1);
+
 		this.setState({
-			myDealerships: array
-		})
+			myDealerships: myArray,
+			dealerships: allArray.sort(this.sortData())
+		});
+	},
+
+	sortData: function() {
+		return function(a, b){
+			return (a.name > b.name) - (a.name < b.name)
+		}
 	},
 
 	render: function() {
@@ -249,11 +271,8 @@ var CreateCar = React.createClass({
 					</div>
 				</div>
 				<p><strong>Dealerships</strong>
-					{this.state.myDealerships.map(function(index){
-						return 	<span className="tag is-success tags">
-									{self.state.dealerships[index].name}
-									<button className="delete" onClick={self.deleteDealership.bind(null, index)} />
-								</span>
+					{this.state.myDealerships.map(function(dealership, index){
+						return <CarTag key={dealership.id} index={index} deleteDealership={self.deleteDealership} dealership={dealership} delete={true}/>
 					})}
 				</p>
 				<div className="control is-horizontal">
@@ -262,15 +281,18 @@ var CreateCar = React.createClass({
 				  	</div>
 				  	<div className="control is-grouped">
 				    	<div className="select">
-				      		<select value={this.state.selected} onChange={this.handleChange.bind(null, 'placeholder')}>
+				      		<select value={this.state.selected} onChange={this.handleChange.bind(null, 'selected')}>
 								{this.state.dealerships.map(function(dealership, index){
-									if(!self.state.myDealerships.indexOf(index) > -1){
-										return <option value={index}>{dealership.name}</option>
-									}
+									return <DealershipSelection key={dealership.id} value={index} dealership={dealership} />
 								})}
 				    		</select>
 				    	</div>
-				    	<button className="button" onClick={this.addDealership} >Add to dealership list</button>
+				    	{this.state.dealerships.length > 0 ?
+							<button className="button" onClick={this.addDealership} >Add to dealership list</button>
+						:
+							<div />
+				    	}
+				    	
 				  	</div>
 				</div>
 			</div>

@@ -7,14 +7,17 @@ var Header = React.createClass({
 		
 		let cars;
 		let dealerships;
+		let clients;
 
 		if(this.props.params.type == 'owner'){
 			cars = 	<Link to={'/'+this.props.params.type+'/'+this.props.params.id+'/cars'} className="header-tab" activeClassName="is-active">Cars</Link>;
 			dealerships = <Link to={'/'+this.props.params.type+'/'+this.props.params.id+'/dealerships'} className="header-tab"activeClassName="is-active">Dealerships</Link>;
+			clients = <Link to={'/'+this.props.params.type+'/'+this.props.params.id+'/clients'} className="header-tab" activeClassName="is-active">Clients</Link>;
 		}
 		else{
 			cars = <div/>
 			dealerships = <div/>
+			clients = <div/>
 		}
 
 		return (
@@ -34,6 +37,7 @@ var Header = React.createClass({
 
 						{dealerships}
 						{cars}
+						{clients}
 
 						<Link 
 							to={'/'+this.props.params.type+'/'+this.props.params.id+'/search'} 

@@ -52,7 +52,7 @@ var CarList = React.createClass({
 			}
 
 		return function(a, b){
-			return (a.year - b.year)
+			return (b.year - a.year)
 		}
 	},
 
