@@ -14,24 +14,68 @@ var CarPage = React.createClass({
 				id: this.props.params.id
 			},
 			pageType: 'list',
-			carData: {} 
+			carData: {
+				dealerships: []
+			} 
 		};
+	},
+
+	getCar: function(id) {
+		let self = this;
+		let serverRequest = $.ajax({
+			url: '/api/v1/car/'+id,
+			type: 'GET',
+			dataType: 'json',
+			contentType: 'application/json',
+			
+			success: function(data) {
+				if(data.success){
+					self.setState({
+						carData: data
+					});
+				}
+			}
+		});
+	},
+
+	changePageType: function(newPage, id) {
+		if(newPage == 'profile'){
+			if(this.state.pageType != 'edit')
+				this.getCar(id);
+
+			this.setState({
+				pageType: newPage,
+			});
+		}
+		else if(newPage == 'edit'){
+			this.setState({
+				pageType: newPage
+			});
+		}
+		else{
+			this.setState({
+				pageType: newPage,
+				carData: {
+					dealerships:[]
+				}
+			});
+		}
 	},
 
 	render: function() {
 		let page;
 			
 		if(this.state.pageType == 'create'){
-			page = <CreateCar  />
+			page = <CreateCar changePage={this.changePageType} params={this.props.params} />
 		}
 		else if(this.state.pageType == 'profile'){
-			page = <CarProfile  />
+			page = <CarProfile changePage={this.changePageType} car={this.state.carData} params={this.props.params} />
 		}
 		else if(this.state.pageType == 'edit'){
-			page = <EditCar />
+			page = <EditCar changePage={this.changePageType} refreshInfo={this.getCar} car={this.state.carData} params={this.props.params} />
 		}
 		else{
-			page = <CarList />
+			page = <CarList changePage={this.changePageType} params={this.props.params} />
 		}
 
 		return (

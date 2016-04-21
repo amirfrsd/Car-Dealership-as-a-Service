@@ -15,16 +15,17 @@ var DeleteModal = React.createClass({
 		});
 	},
 
-	deleteAccount: function(e) {
+	deleteAccount: function(id, e) {
 		e.preventDefault();
-
+		let url = this.props.carID ? '/api/v1/car/'+id : '/api/v1/'+this.props.params.type+'/'+this.props.params.id;
 		let serverRequest = $.ajax({
-		  	url: '/api/v1/'+this.props.params.type+'/'+this.props.params.id,
+		  	url: url,
 		  	type: 'DELETE',
 		  	dataType: 'json',
 		  	contentType: 'application/json',
 		  	data: JSON.stringify({
-		  		password: this.state.password
+		  		password: this.state.password,
+		  		owner: this.props.params.id
 		  	}),
 			success: function(data) {
 				if(data.success){
@@ -42,7 +43,7 @@ var DeleteModal = React.createClass({
 					<div className="modal-content">
 						<div className="box">
 							<p>Please confirm with your password</p>
-							<form onSubmit={this.deleteAccount} >
+							<form onSubmit={this.deleteAccount.bind(null, this.props.carID)} >
 								<p className="control has-icon">
 								 	<input 
 								 		className="input"
@@ -55,7 +56,9 @@ var DeleteModal = React.createClass({
 							  		<i className="fa fa-lock"></i>
 								</p>
 								<p className="control">
-							  		<button type="submit" className="button is-danger">Delete Account</button>
+							  		<button type="submit" className="button is-danger">
+							  			{this.props.carID ? 'Delete Car' : 'Delete Account'}
+							  		</button>
 								</p>
 							</form>
 						</div>
