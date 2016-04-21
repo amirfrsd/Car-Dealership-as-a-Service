@@ -1,14 +1,10 @@
 var React = require('react');
 
-var CarRow = React.createClass({
-
-	handleClick: function(id) {
-		this.props.changePage('profile', id);
-	},
+var SearchRow = React.createClass({
 
 	render: function() {
 		return (
-			<tr className="clickable" onClick={this.handleClick.bind(null, this.props.data.id)}>
+			<tr className="clickable" onClick={this.props.changePage.bind(null, 'profile', this.props.index)} >
 				<td>{this.props.data.brand}</td>
 				<td>{this.props.data.model}</td>
 				<td>{this.props.data.license}</td>
@@ -24,4 +20,4 @@ var CarRow = React.createClass({
 
 });
 
-module.exports = CarRow;
+module.exports = SearchRow;

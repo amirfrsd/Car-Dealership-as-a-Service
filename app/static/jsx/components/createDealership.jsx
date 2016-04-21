@@ -41,7 +41,7 @@ var CreateDealership = React.createClass({
 		  		contact: this.state.contact
 		  	}),
 			success: function(data) {
-				console.log(data);
+
 				if(data.success){
 					self.props.changePage('list');
 				}

@@ -38,7 +38,9 @@ def get_car(id):
         'fuel': car.fuel,
         'price': car.price,
         'year': car.year,
-        'dealerships': dealerships,
+        'location': car.location,
+        'owner_id': car.owner_id,
+        'dealerships': dealerships
     })
 
 
@@ -95,6 +97,7 @@ def edit_car(id):
     car.fuel = json_data['fuel']
     car.price = json_data['price']
     car.year = json_data['year']
+    car.location = json_data['location']
     car.dealership = dealerships
     session.commit()
 
@@ -126,6 +129,8 @@ def get_cars(id):
                 'mileage': car.mileage,
                 'fuel': car.fuel,
                 'price': car.price,
+                'location': car.location,
+                'owner_id': car.owner_id,
                 'year': car.year
             }
         )
@@ -165,6 +170,8 @@ def get_all_cars():
                 'fuel': car.fuel,
                 'price': car.price,
                 'year': car.year,
+                'location': car.location,
+                'owner_id': car.owner_id,
                 'dealerships': dealerships
             }
         )
@@ -203,6 +210,7 @@ def add_car():
         fuel=json_data['fuel'],
         price=json_data['price'],
         year=json_data['year'],
+        location=json_data['location'],
         owner=owner,
         dealership=dealerships)
 
