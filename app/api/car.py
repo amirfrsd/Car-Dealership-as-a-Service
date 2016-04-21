@@ -39,6 +39,7 @@ def get_car(id):
         'price': car.price,
         'year': car.year,
         'location': car.location,
+        'owner_id': car.owner_id,
         'dealerships': dealerships
     })
 
@@ -129,6 +130,7 @@ def get_cars(id):
                 'fuel': car.fuel,
                 'price': car.price,
                 'location': car.location,
+                'owner_id': car.owner_id,
                 'year': car.year
             }
         )
@@ -169,6 +171,7 @@ def get_all_cars():
                 'price': car.price,
                 'year': car.year,
                 'location': car.location,
+                'owner_id': car.owner_id,
                 'dealerships': dealerships
             }
         )

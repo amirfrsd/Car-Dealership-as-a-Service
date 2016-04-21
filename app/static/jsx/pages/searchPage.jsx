@@ -1,6 +1,8 @@
 var React = require('react');
 var Header = require('../components/header.jsx');
 var SearchList = require('../components/searchList.jsx');
+var SearchQueries = require('../components/searchQueries.jsx');
+var CarProfile = require('../components/carProfile.jsx');
 
 var SearchPage = React.createClass({
 
@@ -16,7 +18,9 @@ var SearchPage = React.createClass({
 			fuel: '',
 			carsData: {
 				cars: []
-			} 
+			},
+			pageType: 'list',
+			carID: null
 		};
 	},
 
@@ -38,6 +42,21 @@ var SearchPage = React.createClass({
 				}
 			}
 		});
+	},
+
+	changePageType: function(newPage, id) {
+		if(newPage == 'profile'){
+			this.setState({
+				pageType: newPage,
+				carID: id
+			});
+		}
+		else{
+			this.setState({
+				pageType: newPage,
+				carID: null
+			});
+		}
 	},
 
 	handleChange: function(type, e) {
@@ -76,89 +95,35 @@ var SearchPage = React.createClass({
 	},
 
 	render: function() {
+		let queries = {
+			location: this.state.location,
+			brand: this.state.brand,
+			model: this.state.model,
+			priceLow: this.state.priceLow,
+			priceHigh: this.state.priceHigh,
+			mileageLow: this.state.mileageLow,
+			mileageHigh: this.state.mileageHigh,
+			fuel: this.state.fuel
+		};
+
+		let page;
+		if(this.state.pageType == 'profile'){
+			page = 	<div className="column is-8 is-offset-2 page">
+						<CarProfile changePage={this.changePageType} car={this.state.carsData.cars[this.state.carID]} params={this.props.params} fromSearch={true} />
+					</div>
+		}
+		else{
+			page = 	<div className="column is-8 is-offset-2 page">
+						<SearchQueries queries={queries} handleChange={this.handleChange} />
+						<SearchList data={this.state} changePage={this.changePageType}/>
+					</div>
+		}
+
 		return (
 			<div>
 				<Header params={this.props.params} />
 				<div className="columns">
-					<div className="column is-8 is-offset-2 page">
-						<div className="control is-horizontal">
-							<div className="column">
-								<label className="label">Brand</label>
-								<p className="control">
-								  	<input 
-								  		className="input" 
-								  		type="text"
-								  		value={this.state.brand} 
-								  		onChange={this.handleChange.bind(null, 'brand')}
-								  		placeholder="Brand" />
-								</p>
-								<label className="label">Model</label>
-								<p className="control">
-								  	<input 
-								  		className="input" 
-								  		type="text" 
-										value={this.state.model}
-										onChange={this.handleChange.bind(null, 'model')}
-								  		placeholder="Model" />
-								</p>
-							</div>
-							<div className="column">
-								<label className="label">Location</label>
-								<p className="control">
-								  	<input 
-								  		className="input" 
-								  		type="text" 
-										value={this.state.location}
-										onChange={this.handleChange.bind(null, 'location')}
-								  		placeholder="Location" />
-								</p>
-								<label className="label">Fuel</label>
-								<p className="control">
-								  	<input 
-								  		className="input" 
-								  		type="text" 
-										value={this.state.fuel}
-										onChange={this.handleChange.bind(null, 'fuel')}
-								  		placeholder="Fuel" />
-								</p>
-							</div>
-							<div className="column">
-								<label className="label">Price</label>
-								<p className="control">
-								  	<input 
-								  		className="input" 
-								  		type="text" 
-										value={this.state.priceLow}
-										onChange={this.handleChange.bind(null, 'priceLow')}
-								  		placeholder="min" />
-								  	<input 
-								  		className="input" 
-								  		type="text" 
-										value={this.state.priceHigh}
-										onChange={this.handleChange.bind(null, 'priceHigh')}
-								  		placeholder="max" />
-								</p>
-							</div>
-							<div className="column">
-								<label className="label">Kilometers</label>
-								<p className="control">
-								  	<input 
-								  		className="input" 
-								  		type="text" 
-										value={this.state.mileageLow}
-										onChange={this.handleChange.bind(null, 'mileageLow')}
-								  		placeholder="min" />
-								  	<input 
-								  		className="input" 
-								  		type="text" 
-										value={this.state.mileageHigh}
-										onChange={this.handleChange.bind(null, 'mileageHigh')}
-								  		placeholder="max" />
-								</p>
-							</div>
-						</div>
-						<SearchList data={this.state} />
-					</div>
+					{page}
 				</div>
 			</div>
 		);

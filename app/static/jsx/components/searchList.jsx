@@ -45,9 +45,9 @@ var SeachList = React.createClass({
 						</tr>
 					</thead>
 					<tbody>
-						{this.props.data.carsData.cars.map(function(car){
+						{this.props.data.carsData.cars.map(function(car, index){
 							if(self.matchSearch(car))
-								return <SearchRow key={car.id} data={car} />
+								return <SearchRow key={car.id} data={car} changePage={self.props.changePage} index={index} />
 						})}
 					</tbody>
 				</table>

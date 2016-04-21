@@ -4,7 +4,7 @@ var SearchRow = React.createClass({
 
 	render: function() {
 		return (
-			<tr className="clickable" >
+			<tr className="clickable" onClick={this.props.changePage.bind(null, 'profile', this.props.index)} >
 				<td>{this.props.data.brand}</td>
 				<td>{this.props.data.model}</td>
 				<td>{this.props.data.license}</td>
