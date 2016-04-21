@@ -86,5 +86,5 @@ DerivedData
 node_modules/
 npm-debug.log
 
-#bower
-bower_components/
+#flask configuration file
+config.py
