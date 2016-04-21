@@ -50,6 +50,10 @@ var CarList = React.createClass({
 			return function(a, b){
 				return (a.price - b.price)
 			}
+		else if(field == 'location')
+			return function(a, b){
+				return (a.location > b.location) - (a.location < b.location)
+			}
 
 		return function(a, b){
 			return (b.year - a.year)
@@ -90,8 +94,9 @@ var CarList = React.createClass({
 					      	<option value="brand">Brand</option>
 					      	<option value="model">Model</option>
 					      	<option value="color">Color</option>
-					      	<option value="mileage">Mileage</option>
+					      	<option value="mileage">Kilometers</option>
 					      	<option value="fuel">Fuel</option>
+					      	<option value="location">Location</option>
 					      	<option value="price">Price</option>
 					      	<option value="year">Year</option>
 					    </select>
@@ -104,10 +109,11 @@ var CarList = React.createClass({
 							<th>Model</th>
 							<th>License</th>
 							<th>Color</th>
-							<th>Mileage</th>
+							<th>Kilometers</th>
 							<th>Fuel</th>
 							<th>Year</th>
-							<th>Price</th>
+							<th>Location</th>
+							<th>Price (€)</th>
 						</tr>
 					</thead>
 					<tbody>

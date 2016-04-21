@@ -16,6 +16,7 @@ class Car(Base):
     color = Column(String(20))
     mileage = Column(Integer)
     fuel = Column(String(20))
+    location = Column(String(30))
     price = Column(Integer)
     year = Column(Integer)
     owner_id = Column(Integer, ForeignKey('owner.id'))

@@ -32,6 +32,7 @@ var CarProfile = React.createClass({
 				<p><strong>Mileage</strong><span className="profile-info"> {this.props.car.mileage}</span></p>
 				<p><strong>Fuel</strong><span className="profile-info"> {this.props.car.fuel}</span></p>
 				<p><strong>Year</strong><span className="profile-info"> {this.props.car.year}</span></p>
+				<p><strong>Location</strong><span className="profile-info"> {this.props.car.location}</span></p>
 				<p><strong>Price</strong><span className="profile-info"> {this.props.car.price}</span></p>
 				<p><strong>Dealerships</strong>
 					{this.props.car.dealerships.map(function(dealership){

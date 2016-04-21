@@ -13,6 +13,7 @@ var CreateCar = React.createClass({
 			mileage: '',
 			fuel: '',
 			price: '',
+			location: '',
 			year: '',
 			dealerships: [],
 			myDealerships: [],
@@ -49,6 +50,10 @@ var CreateCar = React.createClass({
 			this.setState({
 				price: e.target.value
 			});
+		else if(type == 'location')
+			this.setState({
+				location: e.target.value
+			});
 		else if(type == 'year')
 			this.setState({
 				year: e.target.value
@@ -83,6 +88,7 @@ var CreateCar = React.createClass({
 				mileage: this.state.mileage,
 				fuel: this.state.fuel,
 				price: this.state.price,
+				location: this.state.location,
 				year: this.state.year,
 				dealerships: dealershipList
 
@@ -216,14 +222,14 @@ var CreateCar = React.createClass({
 				</div>
 				<div className="control is-horizontal">
 					<div className="control-label">
-					    <label className="label">Mileage</label>
+					    <label className="label">Kilometers</label>
 					</div>
 					<div className="control">
 					    <input 
 					    	className="input" 
 					    	type="text" 
 					    	value={this.state.mileage}
-					    	placeholder="Mileage"
+					    	placeholder="Kilometers"
 					    	onChange={this.handleChange.bind(null, 'mileage')}
 					    />
 					</div>
@@ -258,7 +264,21 @@ var CreateCar = React.createClass({
 				</div>
 				<div className="control is-horizontal">
 					<div className="control-label">
-					    <label className="label">Price</label>
+					    <label className="label">Location</label>
+					</div>
+					<div className="control">
+					    <input 
+					    	className="input" 
+					    	type="text" 
+					    	value={this.state.location}
+					    	placeholder="Location"
+					    	onChange={this.handleChange.bind(null, 'location')}
+					    />
+					</div>
+				</div>
+				<div className="control is-horizontal">
+					<div className="control-label">
+					    <label className="label">Price (€)</label>
 					</div>
 					<div className="control">
 					    <input 
