@@ -13,6 +13,7 @@ class User(Base):
     password_hash = Column(String(128), nullable=False)
     contact = Column(String(20))
     img = Column(String(128))
+    auth_token = Column(String(128))
     user_type = Column(String(10), nullable=False)
     __mapper_args__ = {'polymorphic_on': user_type}
 
@@ -21,3 +22,6 @@ class User(Base):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def check_auth_token(self, token):
+        return (self.auth_token == token)

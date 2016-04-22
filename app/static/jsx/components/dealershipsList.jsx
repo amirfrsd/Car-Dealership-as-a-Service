@@ -1,5 +1,6 @@
 var React = require('react');
 var DealershipRow = require('./dealershipRow.jsx');
+var {browserHistory} = require('react-router');
 
 var DealershipsList = React.createClass({
 
@@ -53,12 +54,19 @@ var DealershipsList = React.createClass({
 			type: 'GET',
 			dataType: 'json',
 			contentType: 'application/json',
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader('token', window.location.search.substring(1).split('=')[1]);
+				xhr.setRequestHeader('owner_id', self.props.params.id);
+			},
 			success: function(data) {
 				if(data.success){
 					data.dealerships.sort(self.sortData('name'));
 					self.setState({
 						data: data
 					});
+				}
+				else if(data.unauthorized){
+					browserHistory.push('/');
 				}
 			}
 		});

@@ -1,6 +1,7 @@
 var React = require('react');
 var CarTag = require('./carTag.jsx');
 var DealershipSelection = require('./dealershipSelection.jsx');
+var {browserHistory} = require('react-router');
 
 var CreateCar = React.createClass({
 	
@@ -95,8 +96,11 @@ var CreateCar = React.createClass({
 		  	type: 'POST',
 		  	dataType: 'json',
 		  	contentType: 'application/json',
+		  	beforeSend: function (xhr) {
+				xhr.setRequestHeader('token', window.location.search.substring(1).split('=')[1]);
+				xhr.setRequestHeader('owner_id', self.props.params.id);
+			},
 		  	data: JSON.stringify({
-		  		owner_id: this.props.params.id,
 		  		brand: this.state.brand,
 				model: this.state.model,
 				license: this.state.license,
@@ -115,6 +119,9 @@ var CreateCar = React.createClass({
 				if(data.success){
 					self.props.changePage('list');
 				}
+				else if(data.unauthorized){
+					browserHistory.push('/');
+				}
 			},
 		});
 	},
@@ -127,6 +134,10 @@ var CreateCar = React.createClass({
 			type: 'GET',
 			dataType: 'json',
 			contentType: 'application/json',
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader('token', window.location.search.substring(1).split('=')[1]);
+				xhr.setRequestHeader('owner_id', self.props.params.id);
+			},
 			success: function(data) {
 				if(data.success){
 					self.setState({
@@ -181,7 +192,7 @@ var CreateCar = React.createClass({
 				<form onSubmit={this.addCar} encType="multipart/form-data" >
 					<div className="control is-grouped">
 						<button className="button" type="submit" >Add car</button>
-						<button className="button" onClick={this.props.changePage.bind(null, 'list')} >Back</button>
+						<a className="button" onClick={this.props.changePage.bind(null, 'list')} >Back</a>
 					</div>
 					<div className="control is-horizontal">
 						<div className="control-label">

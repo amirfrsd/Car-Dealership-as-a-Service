@@ -46,7 +46,7 @@ var LoginForm = React.createClass({
 			}),
 			success: function(data){
 				if(data.success)
-					browserHistory.push('/'+data.type+'/'+data.id);
+					browserHistory.push('/'+data.type+'/'+data.id+'?token='+data.token);
 			}
 		});
 

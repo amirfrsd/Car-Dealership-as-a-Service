@@ -3,6 +3,7 @@ var Header = require('../components/header.jsx');
 var SearchList = require('../components/searchList.jsx');
 var SearchQueries = require('../components/searchQueries.jsx');
 var CarProfile = require('../components/carProfile.jsx');
+var {browserHistory} = require('react-router');
 
 var SearchPage = React.createClass({
 
@@ -32,6 +33,11 @@ var SearchPage = React.createClass({
 			type: 'GET',
 			dataType: 'json',
 			contentType: 'application/json',
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader('token', window.location.search.substring(1).split('=')[1]);
+				xhr.setRequestHeader('user_id', self.props.params.id);
+				xhr.setRequestHeader('user_type', self.props.params.type);
+			},
 			
 			success: function(data) {
 				
@@ -39,6 +45,9 @@ var SearchPage = React.createClass({
 					self.setState({
 						carsData: data
 					});
+				}
+				else if(data.unauthorized){
+					browserHistory.push('/');
 				}
 			}
 		});
@@ -105,7 +114,7 @@ var SearchPage = React.createClass({
 			mileageHigh: this.state.mileageHigh,
 			fuel: this.state.fuel
 		};
-
+		
 		let page;
 		if(this.state.pageType == 'profile'){
 			page = 	<div className="column is-8 is-offset-2 page">
@@ -114,14 +123,16 @@ var SearchPage = React.createClass({
 		}
 		else{
 			page = 	<div className="column is-8 is-offset-2 page">
-						<SearchQueries queries={queries} handleChange={this.handleChange} />
-						<SearchList data={this.state} changePage={this.changePageType}/>
+						<SearchQueries queries={queries} handleChange={this.handleChange} params={this.props.params} />
+						<SearchList data={this.state} changePage={this.changePageType} params={this.props.params} />
 					</div>
 		}
-
+		
+		let token = window.location.search.substring(1).split('=')[1];
+		
 		return (
 			<div>
-				<Header params={this.props.params} />
+				<Header params={this.props.params} token={token} />
 				<div className="columns">
 					{page}
 				</div>

@@ -53,6 +53,9 @@ var EditProfile = React.createClass({
 		  	type: 'PUT',
 		  	dataType: 'json',
 		  	contentType: 'application/json',
+		  	beforeSend: function (xhr) {
+				xhr.setRequestHeader('token', window.location.search.substring(1).split('=')[1]);
+			},
 		  	data: JSON.stringify({
 		  		data_uri: this.state.data_uri,
 		  		data_extension: this.state.data_extension,
@@ -65,6 +68,9 @@ var EditProfile = React.createClass({
 					self.props.refreshInfo();
 					self.props.changePage('profile');
 				}
+				else if(data.unauthorized){
+					browserHistory.push('/');
+				}
 			},
 		});
 	},
@@ -76,7 +82,7 @@ var EditProfile = React.createClass({
 				<form onSubmit={this.saveChanges} >
 					<div className="control is-grouped">
 						<button className="button" type="submit" >Save Changes</button>
-						<button className="button" onClick={this.props.changePage.bind(null, 'profile')}>Back</button>
+						<a className="button" onClick={this.props.changePage.bind(null, 'profile')}>Back</a>
 					</div>
 					<div className="control is-horizontal">
 						<div className="control-label">

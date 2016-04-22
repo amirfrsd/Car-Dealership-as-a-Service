@@ -1,5 +1,6 @@
 var React = require('react');
 var CarRow = require('./carRow.jsx');
+var {browserHistory} = require('react-router');
 
 var CarList = React.createClass({
 	
@@ -68,12 +69,18 @@ var CarList = React.createClass({
 			type: 'GET',
 			dataType: 'json',
 			contentType: 'application/json',
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader('token', window.location.search.substring(1).split('=')[1]);
+			},
 			success: function(data) {
 				if(data.success){
 					data.cars.sort(self.sortData('brand'));
 					self.setState({
 						data: data
 					});
+				}
+				else if(data.unauthorized){
+					browserHistory.push('/');
 				}
 			}
 		});

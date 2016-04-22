@@ -4,6 +4,7 @@ var CreateCar = require('../components/createCar.jsx');
 var CarList = require('../components/carList.jsx');
 var CarProfile = require('../components/carProfile.jsx');
 var EditCar = require('../components/editCar.jsx');
+var {browserHistory} = require('react-router');
 
 var CarPage = React.createClass({
 
@@ -27,12 +28,18 @@ var CarPage = React.createClass({
 			type: 'GET',
 			dataType: 'json',
 			contentType: 'application/json',
-			
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader('token', window.location.search.substring(1).split('=')[1]);
+				xhr.setRequestHeader('owner_id', self.props.params.id);
+			},
 			success: function(data) {
 				if(data.success){
 					self.setState({
 						carData: data
 					});
+				}
+				else if(data.unauthorized){
+					browserHistory.push('/');
 				}
 			}
 		});
@@ -77,10 +84,12 @@ var CarPage = React.createClass({
 		else{
 			page = <CarList changePage={this.changePageType} params={this.props.params} />
 		}
+		
+		let token = window.location.search.substring(1).split('=')[1];
 
 		return (
 			<div>
-				<Header params={this.state.params} />
+				<Header params={this.state.params} token={token} />
 				<div className="columns">
 					<div className="column is-8 is-offset-2 page">
 						{page}

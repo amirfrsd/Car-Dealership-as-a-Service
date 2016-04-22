@@ -1,4 +1,5 @@
 var React =require('react');
+var {browserHistory} = require('react-router');
 
 var CreateDealership = React.createClass({
 
@@ -34,6 +35,10 @@ var CreateDealership = React.createClass({
 		  	type: 'POST',
 		  	dataType: 'json',
 		  	contentType: 'application/json',
+		  	beforeSend: function (xhr) {
+				xhr.setRequestHeader('token', window.location.search.substring(1).split('=')[1]);
+				xhr.setRequestHeader('owner_id', self.props.params.id);
+			},
 		  	data: JSON.stringify({
 		  		id: this.props.params.id,
 		  		name: this.state.name,
@@ -45,6 +50,9 @@ var CreateDealership = React.createClass({
 				if(data.success){
 					self.props.changePage('list');
 				}
+				else if(data.unauthorized){
+					browserHistory.push('/');
+				}
 			},
 		});
 	},
@@ -53,52 +61,54 @@ var CreateDealership = React.createClass({
 		return (
 			<div className="is-half">
 				<h1 className="title" >Create dealership</h1>
-				<div className="control is-grouped">
-					<button className="button" onClick={this.createDealership}>Create dealership</button>
-					<button className="button" onClick={this.props.changePage.bind(null, 'list')} >Back</button>
-				</div>
-				<div className="control is-horizontal">
-					<div className="control-label">
-					    <label className="label">Name</label>
+				<form onSubmit={this.createDealership}>
+					<div className="control is-grouped">
+						<button className="button" type="submit">Create dealership</button>
+						<a className="button" onClick={this.props.changePage.bind(null, 'list')} >Back</a>
 					</div>
-					<div className="control">
-					    <input 
-					    	className="input" 
-					    	type="text" 
-					    	value={this.state.name} 
-					    	placeholder="Name"
-					    	onChange={this.handleChange.bind(null, 'name')}
-					    />
+					<div className="control is-horizontal">
+						<div className="control-label">
+						    <label className="label">Name</label>
+						</div>
+						<div className="control">
+						    <input 
+						    	className="input" 
+						    	type="text" 
+						    	value={this.state.name} 
+						    	placeholder="Name"
+						    	onChange={this.handleChange.bind(null, 'name')}
+						    />
+						</div>
 					</div>
-				</div>
-				<div className="control is-horizontal">
-					<div className="control-label">
-					    <label className="label">Location</label>
+					<div className="control is-horizontal">
+						<div className="control-label">
+						    <label className="label">Location</label>
+						</div>
+						<div className="control">
+						    <input 
+						    	className="input" 
+						    	type="text" 
+						    	value={this.state.location}
+						    	placeholder="Location"
+						    	onChange={this.handleChange.bind(null, 'location')}
+						    />
+						</div>
 					</div>
-					<div className="control">
-					    <input 
-					    	className="input" 
-					    	type="text" 
-					    	value={this.state.location}
-					    	placeholder="Location"
-					    	onChange={this.handleChange.bind(null, 'location')}
-					    />
+					<div className="control is-horizontal">
+						<div className="control-label">
+						    <label className="label">Contact</label>
+						</div>
+						<div className="control">
+						    <input 
+						    	className="input" 
+						    	type="text" 
+						    	value={this.state.contact}
+						    	placeholder="Contact"
+						    	onChange={this.handleChange.bind(null, 'contact')}
+						    />
+						</div>
 					</div>
-				</div>
-				<div className="control is-horizontal">
-					<div className="control-label">
-					    <label className="label">Contact</label>
-					</div>
-					<div className="control">
-					    <input 
-					    	className="input" 
-					    	type="text" 
-					    	value={this.state.contact}
-					    	placeholder="Contact"
-					    	onChange={this.handleChange.bind(null, 'contact')}
-					    />
-					</div>
-				</div>
+				</form>
 			</div>
 		);
 	}

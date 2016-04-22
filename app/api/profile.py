@@ -10,15 +10,27 @@ profile = Blueprint('profile_api', __name__, url_prefix="/api/v1")
 @profile.route('/<type>/<int:id>', methods=['GET'])
 def get_profile(type, id):
 
-    if(type == 'client'):
-        user = session.query(Client).get(id)
+    if(request.headers.get('from') == 'profile'):
+        if(type == 'client'):
+            user = session.query(Client).get(id)
+        else:
+            user = session.query(Owner).get(id)
     else:
-        user = session.query(Owner).get(id)
+        user = session.query(Owner).get(request.headers.get('id'))
+        search_user = session.query(Client).get(id)
 
     if not user:
         return jsonify({
-            'success': False
+            'unauthorized': True,
         })
+
+    if not user.check_auth_token(request.headers.get('token')):
+        return jsonify({
+            'unauthorized': True,
+        })
+
+    if(request.headers.get('from') != 'profile'):
+        user = search_user
 
     return jsonify({
         'success': True,
@@ -43,7 +55,12 @@ def update_profile(type, id):
 
     if not user:
         return jsonify({
-            'success': False
+            'unauthorized': True,
+        })
+
+    if not user.check_auth_token(request.headers.get('token')):
+        return jsonify({
+            'unauthorized': True,
         })
 
     if(json_data['data_uri']):
@@ -74,7 +91,12 @@ def change_password(type, id):
 
     if not user or not user.check_password(json_data['password']):
         return jsonify({
-            'success': False
+            'unauthorized': True,
+        })
+
+    if not user.check_auth_token(request.headers.get('token')):
+        return jsonify({
+            'unauthorized': True,
         })
 
     user.hash_password(json_data['newPassword'])
@@ -85,7 +107,7 @@ def change_password(type, id):
 
 
 @profile.route('/<type>/<int:id>', methods=['DELETE'])
-def delete_password(type, id):
+def delete_user(type, id):
 
     json_data = request.json
 
@@ -96,7 +118,12 @@ def delete_password(type, id):
 
     if not user or not user.check_password(json_data['password']):
         return jsonify({
-            'success': False
+            'unauthorized': True,
+        })
+
+    if not user.check_auth_token(request.headers.get('token')):
+        return jsonify({
+            'unauthorized': True,
         })
 
     session.delete(user)
@@ -109,6 +136,18 @@ def delete_password(type, id):
 
 @profile.route('/clients', methods=['GET'])
 def get_clients():
+
+    owner = session.query(Owner).get(request.headers.get('owner_id'))
+
+    if not owner:
+        return jsonify({
+            'unauthorized': True,
+        })
+
+    if not owner.check_auth_token(request.headers.get('token')):
+        return jsonify({
+            'unauthorized': True,
+        })
 
     clients = session.query(Client)
     response = []
