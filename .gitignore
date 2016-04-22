@@ -86,5 +86,7 @@ DerivedData
 node_modules/
 npm-debug.log
 
-#flask configuration file
-config.py
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
