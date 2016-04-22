@@ -10,6 +10,7 @@ class Car(Base):
     __tablename__ = 'car'
 
     id = Column(Integer, primary_key=True)
+    img = Column(String(128))
     brand = Column(String(30))
     model = Column(String(30))
     license_plate = Column(String(15))

@@ -12,6 +12,7 @@ class User(Base):
     email = Column(String(50), unique=True)
     password_hash = Column(String(128), nullable=False)
     contact = Column(String(20))
+    img = Column(String(128))
     user_type = Column(String(10), nullable=False)
     __mapper_args__ = {'polymorphic_on': user_type}
 

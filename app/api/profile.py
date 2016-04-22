@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, request
 from ..models import Client, Owner
 from ..db import session
+from ..amazon import s3_upload
+import base64
 
 profile = Blueprint('profile_api', __name__, url_prefix="/api/v1")
 
@@ -21,6 +23,7 @@ def get_profile(type, id):
     return jsonify({
         'success': True,
         'id': user.id,
+        'img': user.img,
         'type': user.user_type,
         'name': user.name,
         'email': user.email,
@@ -42,6 +45,14 @@ def update_profile(type, id):
         return jsonify({
             'success': False
         })
+
+    if(json_data['data_uri']):
+        data = json_data['data_uri'].split(',')[1]
+        data = base64.b64decode(data)
+        data_extension = json_data['data_extension']
+
+        img = s3_upload(data, data_extension)
+        user.img = img
 
     user.name = json_data['name']
     user.email = json_data['email']
@@ -93,4 +104,27 @@ def delete_password(type, id):
 
     return jsonify({
         'success': True
+    })
+
+
+@profile.route('/clients', methods=['GET'])
+def get_clients():
+
+    clients = session.query(Client)
+    response = []
+
+    for client in clients:
+        response.append(
+            {
+                'id': client.id,
+                'img': client.img,
+                'name': client.name,
+                'email': client.email,
+                'contact': client.contact
+            }
+        )
+
+    return jsonify({
+        'success': True,
+        'clients': response
     })

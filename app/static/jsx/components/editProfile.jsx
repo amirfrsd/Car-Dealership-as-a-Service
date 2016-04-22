@@ -5,6 +5,8 @@ var EditProfile = React.createClass({
 
 	getInitialState: function() {
 		return {
+			data_uri: '',
+			data_extension: '',
 			name: this.props.data.name,
 			email: this.props.data.email,
 			contact: this.props.data.contact
@@ -16,6 +18,19 @@ var EditProfile = React.createClass({
 			this.setState({
 				name: e.target.value
 			});
+		else if(type == 'data_uri'){
+			let self = this;
+		    let reader = new FileReader();
+		    let file = e.target.files[0];
+
+		    reader.onload = function(upload) {
+		      self.setState({
+		        data_uri: upload.target.result,
+		        data_extension: '.'+file.name.split('.')[1]
+		      });
+		    }
+			reader.readAsDataURL(file);
+		}
 		else if(type == 'email')
 			this.setState({
 				email: e.target.value
@@ -39,9 +54,11 @@ var EditProfile = React.createClass({
 		  	dataType: 'json',
 		  	contentType: 'application/json',
 		  	data: JSON.stringify({
-		  		name: this.state.name,
-		  		email: this.state.email,
-		  		contact: this.state.contact,
+		  		data_uri: this.state.data_uri,
+		  		data_extension: this.state.data_extension,
+		  		name: this.state.name ? this.state.name : '',
+		  		email: this.state.email ? this.state.email : '',
+		  		contact: this.state.contact ? this.state.contact : '',
 		  	}),
 			success: function(data) {
 				if(data.success){
@@ -60,6 +77,17 @@ var EditProfile = React.createClass({
 					<div className="control is-grouped">
 						<button className="button" type="submit" >Save Changes</button>
 						<button className="button" onClick={this.props.changePage.bind(null, 'profile')}>Back</button>
+					</div>
+					<div className="control is-horizontal">
+						<div className="control-label">
+						    <label className="label">Image</label>
+						</div>
+						<div className="control">
+						    <input  
+						    	type="file" 
+						    	onChange={this.handleChange.bind(null, 'data_uri')}
+						    />
+						</div>
 					</div>
 					<div className="control is-horizontal">
 						<div className="control-label">

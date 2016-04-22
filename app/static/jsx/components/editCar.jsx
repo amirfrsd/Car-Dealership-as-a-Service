@@ -6,6 +6,8 @@ var EditCar = React.createClass({
 
 	getInitialState: function() {
 		return {
+			data_uri: '',
+			data_extension: '', 
 			brand: this.props.car.brand,
 			model: this.props.car.model,
 			license: this.props.car.license,
@@ -13,7 +15,7 @@ var EditCar = React.createClass({
 			mileage: this.props.car.mileage,
 			fuel: this.props.car.fuel,
 			year: this.props.car.year,
-			location: this.props.location,
+			location: this.props.car.location,
 			price: this.props.car.price,
 			myDealerships: this.props.car.dealerships,
 			dealerships: [],
@@ -62,6 +64,19 @@ var EditCar = React.createClass({
 			this.setState({
 				brand: e.target.value
 			});
+		else if(type == 'data_uri'){
+			let self = this;
+		    let reader = new FileReader();
+		    let file = e.target.files[0];
+
+		    reader.onload = function(upload) {
+		      self.setState({
+		        data_uri: upload.target.result,
+		        data_extension: '.'+file.name.split('.')[1]
+		      });
+		    }
+			reader.readAsDataURL(file);
+		}
 		else if(type == 'model')
 			this.setState({
 				model: e.target.value
@@ -154,15 +169,17 @@ var EditCar = React.createClass({
 		  	contentType: 'application/json',
 		  	data: JSON.stringify({
 		  		owner_id: this.props.params.id,
-		  		brand: this.state.brand,
-				model: this.state.model,
-				license: this.state.license,
-				color: this.state.color,
-				mileage: this.state.mileage,
-				fuel: this.state.fuel,
-				price: this.state.price,
-				location: this.state.location,
-				year: this.state.year,
+		  		data_uri: this.state.data_uri,
+		  		data_extension: this.state.data_extension,
+		  		brand: this.state.brand ? this.state.brand : '',
+				model: this.state.model ? this.state.model : '',
+				license: this.state.license ? this.state.license : '',
+				color: this.state.color ? this.state.color : '',
+				mileage: this.state.mileage ? this.state.mileage : null,
+				fuel: this.state.fuel ? this.state.fuel : '',
+				price: this.state.price ? this.state.price : null,
+				location: this.state.location ? this.state.location : '',
+				year: this.state.year ? this.state.year : null,
 				dealerships: dealershipList
 
 		  	}),
@@ -185,6 +202,17 @@ var EditCar = React.createClass({
 				<div className="control is-grouped">
 					<button className="button" onClick={this.saveChanges} >Save Changes</button>
 					<button className="button" onClick={this.props.changePage.bind(null, 'profile')}>Back</button>
+				</div>
+				<div className="control is-horizontal">
+					<div className="control-label">
+					    <label className="label">Image</label>
+					</div>
+					<div className="control">
+					    <input  
+					    	type="file" 
+					    	onChange={this.handleChange.bind(null, 'data_uri')}
+					    />
+					</div>
 				</div>
 				<div className="control is-horizontal">
 					<div className="control-label">

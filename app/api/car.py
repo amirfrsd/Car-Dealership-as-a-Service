@@ -1,7 +1,8 @@
 from flask import Blueprint, jsonify, request
 from ..models import Dealership, Owner, Car
 from ..db import session
-
+from ..amazon import s3_upload
+import base64
 
 car = Blueprint('car_api', __name__, url_prefix="/api/v1")
 
@@ -30,6 +31,7 @@ def get_car(id):
     return jsonify({
         'success': True,
         'id': car.id,
+        'img': car.img,
         'brand': car.brand,
         'model': car.model,
         'license': car.license_plate,
@@ -89,6 +91,14 @@ def edit_car(id):
         if newDealership:
             dealerships.append(newDealership)
 
+    if(json_data['data_uri']):
+        data = json_data['data_uri'].split(',')[1]
+        data = base64.b64decode(data)
+        data_extension = json_data['data_extension']
+
+        img = s3_upload(data, data_extension)
+        car.img = img
+
     car.brand = json_data['brand']
     car.model = json_data['model']
     car.license_plate = json_data['license']
@@ -122,6 +132,7 @@ def get_cars(id):
         response.append(
             {
                 'id': car.id,
+                'img': car.img,
                 'brand': car.brand,
                 'model': car.model,
                 'license': car.license_plate,
@@ -162,6 +173,7 @@ def get_all_cars():
         response.append(
             {
                 'id': car.id,
+                'img': car.img,
                 'brand': car.brand,
                 'model': car.model,
                 'license': car.license_plate,
@@ -187,6 +199,15 @@ def add_car():
 
     json_data = request.json
 
+    if(json_data['data_uri']):
+        data = json_data['data_uri'].split(',')[1]
+        data = base64.b64decode(data)
+        data_extension = json_data['data_extension']
+
+        img = s3_upload(data, data_extension)
+    else:
+        img = 'https://s3-eu-west-1.amazonaws.com/cardealershipasaservice/car_placeholder.png'
+
     owner = session.query(Owner).get(json_data['owner_id'])
 
     if not owner:
@@ -202,6 +223,7 @@ def add_car():
             dealerships.append(newDealership)
 
     newCar = Car(
+        img=img,
         brand=json_data['brand'],
         model=json_data['model'],
         license_plate=json_data['license'],
