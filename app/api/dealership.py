@@ -13,7 +13,12 @@ def get_my_dealerships(id):
 
     if not owner:
         return jsonify({
-            'success': False
+            'unauthorized': True,
+        })
+
+    if not owner.check_auth_token(request.headers.get('token')):
+        return jsonify({
+            'unauthorized': True,
         })
 
     dealerships = session.query(Dealership).filter(
@@ -39,6 +44,18 @@ def get_my_dealerships(id):
 
 @dealership.route('/dealerships', methods=['GET'])
 def get_all_dealerhips():
+
+    owner = session.query(Owner).get(request.headers.get('owner_id'))
+
+    if not owner:
+        return jsonify({
+            'unauthorized': True,
+        })
+
+    if not owner.check_auth_token(request.headers.get('token')):
+        return jsonify({
+            'unauthorized': True,
+        })
 
     dealerships = session.query(Dealership)
 
@@ -69,7 +86,12 @@ def create_dealership():
 
     if not owner:
         return jsonify({
-            'success': False
+            'unauthorized': True,
+        })
+
+    if not owner.check_auth_token(request.headers.get('token')):
+        return jsonify({
+            'unauthorized': True,
         })
 
     newDealership = Dealership(
@@ -90,6 +112,18 @@ def create_dealership():
 @dealership.route('/dealership/<int:id>', methods=['GET'])
 def get_dealership(id):
 
+    owner = session.query(Owner).get(request.headers.get('owner_id'))
+
+    if not owner:
+        return jsonify({
+            'unauthorized': True,
+        })
+
+    if not owner.check_auth_token(request.headers.get('token')):
+        return jsonify({
+            'unauthorized': True,
+        })
+
     dealership = session.query(Dealership).get(id)
 
     if not dealership:
@@ -109,6 +143,19 @@ def get_dealership(id):
 
 @dealership.route('/dealership/<int:id>', methods=['PUT'])
 def edit_dealerhip(id):
+
+    owner = session.query(Owner).get(request.headers.get('owner_id'))
+
+    if not owner:
+        return jsonify({
+            'unauthorized': True,
+        })
+
+    if not owner.check_auth_token(request.headers.get('token')):
+        return jsonify({
+            'unauthorized': True,
+        })
+
     json_data = request.json
 
     dealership = session.query(Dealership).get(id)

@@ -37,6 +37,10 @@ var EditDealership = React.createClass({
 		  	type: 'PUT',
 		  	dataType: 'json',
 		  	contentType: 'application/json',
+		  	beforeSend: function (xhr) {
+				xhr.setRequestHeader('token', window.location.search.substring(1).split('=')[1]);
+				xhr.setRequestHeader('owner_id', self.props.params.id);
+			},
 		  	data: JSON.stringify({
 		  		name: this.state.name,
 		  		location: this.state.location,

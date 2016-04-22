@@ -25,6 +25,12 @@ var DeleteModal = React.createClass({
 		  	type: 'DELETE',
 		  	dataType: 'json',
 		  	contentType: 'application/json',
+		  	beforeSend: function (xhr) {
+				xhr.setRequestHeader('token', window.location.search.substring(1).split('=')[1]);
+				if(self.props.carID){
+					xhr.setRequestHeader('owner_id', self.props.params.id);
+				}
+			},
 		  	data: JSON.stringify({
 		  		password: this.state.password,
 		  		owner: this.props.params.id
@@ -34,7 +40,7 @@ var DeleteModal = React.createClass({
 					if(self.props.carID){
 						self.props.changePage('list')
 					}
-					else{
+					else if(data.unauthorized){
 						browserHistory.push('/');
 					}
 				}

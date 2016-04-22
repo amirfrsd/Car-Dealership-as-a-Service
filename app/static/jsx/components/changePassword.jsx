@@ -1,4 +1,5 @@
 var React = require('react');
+var {browserHistory} = require('react-router');
 
 var ChangePassword = React.createClass({
 
@@ -38,6 +39,9 @@ var ChangePassword = React.createClass({
 		  	type: 'PUT',
 		  	dataType: 'json',
 		  	contentType: 'application/json',
+		  	beforeSend: function (xhr) {
+				xhr.setRequestHeader('token', window.location.search.substring(1).split('=')[1]);
+			},
 		  	data: JSON.stringify({
 		  		password: this.state.password,
 		  		newPassword: this.state.newPassword
@@ -45,6 +49,9 @@ var ChangePassword = React.createClass({
 			success: function(data) {
 				if(data.success){
 					self.props.changePage('profile');
+				}
+				else if(data.unauthorized){
+					browserHistory.push('/');
 				}
 			},
 		});
@@ -57,7 +64,7 @@ var ChangePassword = React.createClass({
 				<form onSubmit={this.saveNewPassword} >
 					<div className="control is-grouped">
 						<button className="button" type="submit">Save New Password</button>
-						<button className="button" onClick={this.props.changePage.bind(null, 'profile')}>Back</button>
+						<a className="button" onClick={this.props.changePage.bind(null, 'profile')}>Back</a>
 					</div>
 					<div className="control is-horizontal">
 						<div className="control has-icon">

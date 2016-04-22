@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from ..models import Owner, Client
 from ..db import session
+import uuid
 
 
 auth = Blueprint('auth_api', __name__, url_prefix="/api/v1")
@@ -18,6 +19,7 @@ def register():
             img=default_img,
             name=json_data['name'],
             email=json_data['email'],
+            auth_token=uuid.uuid4().hex
         )
 
     else:
@@ -25,6 +27,7 @@ def register():
             img=default_img,
             name=json_data['name'],
             email=json_data['email'],
+            auth_token=uuid.uuid4().hex
         )
 
     newUser.hash_password(json_data['password'])
@@ -57,8 +60,12 @@ def login():
             'success': False
         })
 
+    user.auth_token = uuid.uuid4().hex
+    session.commit()
+
     return jsonify({
         'success': True,
         'id': user.id,
-        'type': user.user_type
+        'type': user.user_type,
+        'token': user.auth_token
     })

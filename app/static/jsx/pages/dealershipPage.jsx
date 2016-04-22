@@ -4,6 +4,7 @@ var CreateDealership = require('../components/createDealership.jsx');
 var DealershipsList = require('../components/dealershipsList.jsx');
 var DealershipProfile = require('../components/dealershipProfile.jsx');
 var EditDealership = require('../components/editDealership.jsx');
+var {browserHistory} = require('react-router');
 
 var DealershipsPage = React.createClass({
 
@@ -25,13 +26,19 @@ var DealershipsPage = React.createClass({
 			type: 'GET',
 			dataType: 'json',
 			contentType: 'application/json',
-			
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader('token', window.location.search.substring(1).split('=')[1]);
+				xhr.setRequestHeader('owner_id', self.props.params.id);
+			},
 			success: function(data) {
 				
 				if(data.success){
 					self.setState({
 						dealershipData: data
 					});
+				}
+				else if(data.unauthorized){
+					browserHistory.push('/');
 				}
 			}
 		});
@@ -75,9 +82,11 @@ var DealershipsPage = React.createClass({
 			page = <DealershipsList changePage={this.changePageType} params={this.props.params} />
 		}
 		
+		let token = window.location.search.substring(1).split('=')[1];
+
 		return (
 			<div>
-				<Header params={this.state.params} />
+				<Header params={this.state.params} token={token} />
 				<div className="columns">
 					<div className="column is-8 is-offset-2 page">
 						{page}

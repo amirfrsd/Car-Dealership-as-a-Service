@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from ..models import Dealership, Owner, Car
+from ..models import Dealership, Owner, Car, Client
 from ..db import session
 from ..amazon import s3_upload
 import base64
@@ -9,6 +9,19 @@ car = Blueprint('car_api', __name__, url_prefix="/api/v1")
 
 @car.route('/car/<int:id>', methods=['GET'])
 def get_car(id):
+
+    owner = session.query(Owner).get(request.headers.get('owner_id'))
+
+    if not owner:
+        return jsonify({
+            'unauthorized': True,
+        })
+
+    if not owner.check_auth_token(request.headers.get('token')):
+        return jsonify({
+            'unauthorized': True,
+        })
+
     car = session.query(Car).get(id)
 
     if not car:
@@ -55,14 +68,19 @@ def delete_car(id):
 
     if not owner or not owner.check_password(json_data['password']):
         return jsonify({
-            'success': False
+            'unauthorized': True,
+        })
+
+    if not owner.check_auth_token(request.headers.get('token')):
+        return jsonify({
+            'unauthorized': True,
         })
 
     car = session.query(Car).get(id)
 
     if not car or (car.owner_id != owner.id):
         return jsonify({
-            'success': False
+            'unauthorized': True,
         })
 
     session.delete(car)
@@ -75,6 +93,19 @@ def delete_car(id):
 
 @car.route('/car/<int:id>', methods=['PUT'])
 def edit_car(id):
+
+    owner = session.query(Owner).get(request.headers.get('owner_id'))
+
+    if not owner:
+        return jsonify({
+            'unauthorized': True,
+        })
+
+    if not owner.check_auth_token(request.headers.get('token')):
+        return jsonify({
+            'unauthorized': True,
+        })
+
     json_data = request.json
 
     car = session.query(Car).get(id)
@@ -119,14 +150,21 @@ def edit_car(id):
 @car.route('/owner/<int:id>/cars', methods=['GET'])
 def get_cars(id):
 
-    cars = session.query(Car).filter(Car.owner_id == id)
+    owner = session.query(Owner).get(id)
+
+    if not owner:
+        return jsonify({
+            'unauthorized': True,
+        })
+
+    if not owner.check_auth_token(request.headers.get('token')):
+        return jsonify({
+            'unauthorized': True,
+        })
+
+    cars = session.query(Car).filter(Car.owner_id == owner.id)
 
     response = []
-
-    if not cars:
-        return jsonify({
-            'success': False
-        })
 
     for car in cars:
         response.append(
@@ -154,6 +192,23 @@ def get_cars(id):
 
 @car.route('/cars', methods=['GET'])
 def get_all_cars():
+
+    type = request.headers.get('user_type')
+
+    if(type == 'client'):
+        user = session.query(Client).get(request.headers.get('user_id'))
+    else:
+        user = session.query(Owner).get(request.headers.get('user_id'))
+
+    if not user:
+        return jsonify({
+            'unauthorized': True,
+        })
+
+    if not user.check_auth_token(request.headers.get('token')):
+        return jsonify({
+            'unauthorized': True,
+        })
 
     cars = session.query(Car)
     response = []
@@ -197,6 +252,18 @@ def get_all_cars():
 @car.route('/cars', methods=['POST'])
 def add_car():
 
+    owner = session.query(Owner).get(request.headers.get('owner_id'))
+
+    if not owner:
+        return jsonify({
+            'unauthorized': True,
+        })
+
+    if not owner.check_auth_token(request.headers.get('token')):
+        return jsonify({
+            'unauthorized': True,
+        })
+
     json_data = request.json
 
     if(json_data['data_uri']):
@@ -207,13 +274,6 @@ def add_car():
         img = s3_upload(data, data_extension)
     else:
         img = 'https://s3-eu-west-1.amazonaws.com/cardealershipasaservice/car_placeholder.png'
-
-    owner = session.query(Owner).get(json_data['owner_id'])
-
-    if not owner:
-        return jsonify({
-            'success': False
-        })
 
     dealerships = []
 

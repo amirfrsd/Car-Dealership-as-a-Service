@@ -1,6 +1,7 @@
 var React = require('react');
 var CarTag = require('./carTag.jsx');
 var DealershipSelection = require('./dealershipSelection.jsx');
+var {browserHistory} = require('react-router');
 
 var EditCar = React.createClass({
 
@@ -43,6 +44,10 @@ var EditCar = React.createClass({
 			type: 'GET',
 			dataType: 'json',
 			contentType: 'application/json',
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader('token', window.location.search.substring(1).split('=')[1]);
+				xhr.setRequestHeader('owner_id', self.props.params.id);
+			},
 			success: function(data) {
 				if(data.success){
 					let allArray = [];
@@ -167,6 +172,10 @@ var EditCar = React.createClass({
 		  	type: 'PUT',
 		  	dataType: 'json',
 		  	contentType: 'application/json',
+		  	beforeSend: function (xhr) {
+				xhr.setRequestHeader('token', window.location.search.substring(1).split('=')[1]);
+				xhr.setRequestHeader('owner_id', self.props.params.id);
+			},
 		  	data: JSON.stringify({
 		  		owner_id: this.props.params.id,
 		  		data_uri: this.state.data_uri,
@@ -188,6 +197,9 @@ var EditCar = React.createClass({
 					self.props.refreshInfo(self.props.car.id);
 					self.props.changePage('profile');
 				}
+				else if(data.unauthorized){
+					browserHistory.push('/');
+				}
 			},
 		});
 	},
@@ -199,172 +211,174 @@ var EditCar = React.createClass({
 		return (
 			<div>
 				<h1 className="title">Edit Profile</h1>
-				<div className="control is-grouped">
-					<button className="button" onClick={this.saveChanges} >Save Changes</button>
-					<button className="button" onClick={this.props.changePage.bind(null, 'profile')}>Back</button>
-				</div>
-				<div className="control is-horizontal">
-					<div className="control-label">
-					    <label className="label">Image</label>
+				<form onSubmit={this.saveChanges}>
+					<div className="control is-grouped">
+						<button className="button" type="submit" >Save Changes</button>
+						<a className="button" onClick={this.props.changePage.bind(null, 'profile')}>Back</a>
 					</div>
-					<div className="control">
-					    <input  
-					    	type="file" 
-					    	onChange={this.handleChange.bind(null, 'data_uri')}
-					    />
+					<div className="control is-horizontal">
+						<div className="control-label">
+						    <label className="label">Image</label>
+						</div>
+						<div className="control">
+						    <input  
+						    	type="file" 
+						    	onChange={this.handleChange.bind(null, 'data_uri')}
+						    />
+						</div>
 					</div>
-				</div>
-				<div className="control is-horizontal">
-					<div className="control-label">
-					    <label className="label">Brand</label>
+					<div className="control is-horizontal">
+						<div className="control-label">
+						    <label className="label">Brand</label>
+						</div>
+						<div className="control">
+						    <input 
+						    	className="input" 
+						    	type="text" 
+						    	value={this.state.brand} 
+						    	placeholder="Name"
+						    	onChange={this.handleChange.bind(null, 'brand')}
+						    />
+						</div>
 					</div>
-					<div className="control">
-					    <input 
-					    	className="input" 
-					    	type="text" 
-					    	value={this.state.brand} 
-					    	placeholder="Name"
-					    	onChange={this.handleChange.bind(null, 'brand')}
-					    />
+					<div className="control is-horizontal">
+						<div className="control-label">
+						    <label className="label">Model</label>
+						</div>
+						<div className="control">
+						    <input 
+						    	className="input" 
+						    	type="text" 
+						    	value={this.state.model}
+						    	placeholder="Model"
+						    	onChange={this.handleChange.bind(null, 'model')}
+						    />
+						</div>
 					</div>
-				</div>
-				<div className="control is-horizontal">
-					<div className="control-label">
-					    <label className="label">Model</label>
+					<div className="control is-horizontal">
+						<div className="control-label">
+						    <label className="label">License</label>
+						</div>
+						<div className="control">
+						    <input 
+						    	className="input" 
+						    	type="text" 
+						    	value={this.state.license}
+						    	placeholder="License"
+						    	onChange={this.handleChange.bind(null, 'license')}
+						    />
+						</div>
 					</div>
-					<div className="control">
-					    <input 
-					    	className="input" 
-					    	type="text" 
-					    	value={this.state.model}
-					    	placeholder="Model"
-					    	onChange={this.handleChange.bind(null, 'model')}
-					    />
+					<div className="control is-horizontal">
+						<div className="control-label">
+						    <label className="label">Color</label>
+						</div>
+						<div className="control">
+						    <input 
+						    	className="input" 
+						    	type="text" 
+						    	value={this.state.color}
+						    	placeholder="Color"
+						    	onChange={this.handleChange.bind(null, 'color')}
+						    />
+						</div>
 					</div>
-				</div>
-				<div className="control is-horizontal">
-					<div className="control-label">
-					    <label className="label">License</label>
+					<div className="control is-horizontal">
+						<div className="control-label">
+						    <label className="label">Kilometers</label>
+						</div>
+						<div className="control">
+						    <input 
+						    	className="input" 
+						    	type="text" 
+						    	value={this.state.mileage}
+						    	placeholder="Kilometers"
+						    	onChange={this.handleChange.bind(null, 'mileage')}
+						    />
+						</div>
 					</div>
-					<div className="control">
-					    <input 
-					    	className="input" 
-					    	type="text" 
-					    	value={this.state.license}
-					    	placeholder="License"
-					    	onChange={this.handleChange.bind(null, 'license')}
-					    />
+					<div className="control is-horizontal">
+						<div className="control-label">
+						    <label className="label">Fuel</label>
+						</div>
+						<div className="control">
+						    <input 
+						    	className="input" 
+						    	type="text" 
+						    	value={this.state.fuel}
+						    	placeholder="Fuel"
+						    	onChange={this.handleChange.bind(null, 'fuel')}
+						    />
+						</div>
 					</div>
-				</div>
-				<div className="control is-horizontal">
-					<div className="control-label">
-					    <label className="label">Color</label>
+					<div className="control is-horizontal">
+						<div className="control-label">
+						    <label className="label">Year</label>
+						</div>
+						<div className="control">
+						    <input 
+						    	className="input" 
+						    	type="text" 
+						    	value={this.state.year}
+						    	placeholder="Year"
+						    	onChange={this.handleChange.bind(null, 'year')}
+						    />
+						</div>
 					</div>
-					<div className="control">
-					    <input 
-					    	className="input" 
-					    	type="text" 
-					    	value={this.state.color}
-					    	placeholder="Color"
-					    	onChange={this.handleChange.bind(null, 'color')}
-					    />
+					<div className="control is-horizontal">
+						<div className="control-label">
+						    <label className="label">Location</label>
+						</div>
+						<div className="control">
+						    <input 
+						    	className="input" 
+						    	type="text" 
+						    	value={this.state.location}
+						    	placeholder="Location"
+						    	onChange={this.handleChange.bind(null, 'location')}
+						    />
+						</div>
 					</div>
-				</div>
-				<div className="control is-horizontal">
-					<div className="control-label">
-					    <label className="label">Kilometers</label>
+					<div className="control is-horizontal">
+						<div className="control-label">
+						    <label className="label">Price (€)</label>
+						</div>
+						<div className="control">
+						    <input 
+						    	className="input" 
+						    	type="text" 
+						    	value={this.state.price}
+						    	placeholder="Price"
+						    	onChange={this.handleChange.bind(null, 'price')}
+						    />
+						</div>
 					</div>
-					<div className="control">
-					    <input 
-					    	className="input" 
-					    	type="text" 
-					    	value={this.state.mileage}
-					    	placeholder="Kilometers"
-					    	onChange={this.handleChange.bind(null, 'mileage')}
-					    />
+					<p><strong>Dealerships</strong>
+						{this.state.myDealerships.map(function(dealership, index){
+							return <CarTag key={dealership.id} index={index} deleteDealership={self.deleteDealership} dealership={dealership} delete={true}/>
+						})}
+					</p>
+					<div className="control is-horizontal">
+					 	<div className="control-label">
+					    	<label className="label">Available Dealerships</label>
+					  	</div>
+					  	<div className="control is-grouped">
+					    	<div className="select">
+					      		<select value={this.state.selected} onChange={this.handleChange.bind(null, 'selected')}>
+									{this.state.dealerships.map(function(dealership, index){
+										return <DealershipSelection key={dealership.id} value={index} dealership={dealership} />
+									})}
+					    		</select>
+					    	</div>
+					    	{this.state.dealerships.length > 0 ?
+								<a className="button" onClick={this.addDealership} >Add to dealership list</a>
+							:
+								<div />
+					    	}
+					    	
+					  	</div>
 					</div>
-				</div>
-				<div className="control is-horizontal">
-					<div className="control-label">
-					    <label className="label">Fuel</label>
-					</div>
-					<div className="control">
-					    <input 
-					    	className="input" 
-					    	type="text" 
-					    	value={this.state.fuel}
-					    	placeholder="Fuel"
-					    	onChange={this.handleChange.bind(null, 'fuel')}
-					    />
-					</div>
-				</div>
-				<div className="control is-horizontal">
-					<div className="control-label">
-					    <label className="label">Year</label>
-					</div>
-					<div className="control">
-					    <input 
-					    	className="input" 
-					    	type="text" 
-					    	value={this.state.year}
-					    	placeholder="Year"
-					    	onChange={this.handleChange.bind(null, 'year')}
-					    />
-					</div>
-				</div>
-				<div className="control is-horizontal">
-					<div className="control-label">
-					    <label className="label">Location</label>
-					</div>
-					<div className="control">
-					    <input 
-					    	className="input" 
-					    	type="text" 
-					    	value={this.state.location}
-					    	placeholder="Location"
-					    	onChange={this.handleChange.bind(null, 'location')}
-					    />
-					</div>
-				</div>
-				<div className="control is-horizontal">
-					<div className="control-label">
-					    <label className="label">Price (€)</label>
-					</div>
-					<div className="control">
-					    <input 
-					    	className="input" 
-					    	type="text" 
-					    	value={this.state.price}
-					    	placeholder="Price"
-					    	onChange={this.handleChange.bind(null, 'price')}
-					    />
-					</div>
-				</div>
-				<p><strong>Dealerships</strong>
-					{this.state.myDealerships.map(function(dealership, index){
-						return <CarTag key={dealership.id} index={index} deleteDealership={self.deleteDealership} dealership={dealership} delete={true}/>
-					})}
-				</p>
-				<div className="control is-horizontal">
-				 	<div className="control-label">
-				    	<label className="label">Available Dealerships</label>
-				  	</div>
-				  	<div className="control is-grouped">
-				    	<div className="select">
-				      		<select value={this.state.selected} onChange={this.handleChange.bind(null, 'selected')}>
-								{this.state.dealerships.map(function(dealership, index){
-									return <DealershipSelection key={dealership.id} value={index} dealership={dealership} />
-								})}
-				    		</select>
-				    	</div>
-				    	{this.state.dealerships.length > 0 ?
-							<button className="button" onClick={this.addDealership} >Add to dealership list</button>
-						:
-							<div />
-				    	}
-				    	
-				  	</div>
-				</div>
+				</form>
 			</div>
 		);
 	}

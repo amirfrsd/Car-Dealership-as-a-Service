@@ -37,8 +37,13 @@ var ClientsPage = React.createClass({
 			type: 'GET',
 			dataType: 'json',
 			contentType: 'application/json',
-			
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader('token', window.location.search.substring(1).split('=')[1]);
+				xhr.setRequestHeader('id', self.props.params.id);
+				xhr.setRequestHeader('from', 'clients');
+			},
 			success: function(data) {
+
 				if(data.success){
 					self.setState({
 						clientData: data
@@ -52,15 +57,17 @@ var ClientsPage = React.createClass({
 		let page;
 			
 		if(this.state.pageType == 'profile'){
-			page = <ClientProfile changePage={this.changePageType} data={this.state.clientData} />
+			page = <ClientProfile changePage={this.changePageType} data={this.state.clientData} params={this.props.params} />
 		}
 		else{
-			page = <ClientList changePage={this.changePageType} />
+			page = <ClientList changePage={this.changePageType} params={this.props.params} />
 		}
+		
+		let token = window.location.search.substring(1).split('=')[1];
 
 		return (
 			<div>
-				<Header params={this.state.params}/>
+				<Header params={this.state.params} token={token} />
 				<div className="columns">
 					<div className="column is-8 is-offset-2 page">
 						{page}
