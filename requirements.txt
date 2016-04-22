@@ -1,3 +1,4 @@
+boto==2.39.0
 Flask==0.10.1
 Flask-SQLAlchemy==2.1
 itsdangerous==0.24

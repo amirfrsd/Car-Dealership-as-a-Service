@@ -11,14 +11,18 @@ def register():
 
     json_data = request.json
 
+    default_img = 'https://s3-eu-west-1.amazonaws.com/cardealershipasaservice/avatar_placeholder.png'
+
     if(json_data['type'] == 'owner'):
         newUser = Owner(
+            img=default_img,
             name=json_data['name'],
             email=json_data['email'],
         )
 
     else:
         newUser = Client(
+            img=default_img,
             name=json_data['name'],
             email=json_data['email'],
         )

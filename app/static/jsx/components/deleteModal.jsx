@@ -18,6 +18,8 @@ var DeleteModal = React.createClass({
 	deleteAccount: function(id, e) {
 		e.preventDefault();
 		let url = this.props.carID ? '/api/v1/car/'+id : '/api/v1/'+this.props.params.type+'/'+this.props.params.id;
+		let self = this;
+
 		let serverRequest = $.ajax({
 		  	url: url,
 		  	type: 'DELETE',
@@ -29,7 +31,12 @@ var DeleteModal = React.createClass({
 		  	}),
 			success: function(data) {
 				if(data.success){
-					browserHistory.push('/');
+					if(self.props.carID){
+						self.props.changePage('list')
+					}
+					else{
+						browserHistory.push('/');
+					}
 				}
 			},
 		});

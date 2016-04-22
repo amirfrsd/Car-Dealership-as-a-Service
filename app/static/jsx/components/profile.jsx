@@ -16,6 +16,7 @@ var Profile = React.createClass({
 	},
 
 	render: function() {
+		
 		return (
 			<div className="column is-8 is-offset-2 page">
 				<h1 className="title">My Profile</h1>
@@ -24,6 +25,9 @@ var Profile = React.createClass({
 					<button className="button" onClick={this.props.changePage.bind(null, 'changePassword')}>Change Password</button>
 					<button className="button is-danger" onClick={this.handleClick} >Delete Account</button>
 				</div>
+				<figure className="image is-128x128">
+  					<img src={this.props.data.img} />
+				</figure>
 				<p><strong>Account Type</strong><span className="profile-info"> {this.props.data.type == 'client' ? 'Client' : 'Owner'}</span></p>
 				<p><strong>Name</strong><span className="profile-info"> {this.props.data.name}</span></p>
 				<p><strong>Email</strong><span className="profile-info"> {this.props.data.email}</span></p>

@@ -27,6 +27,7 @@ var ProfilePage = React.createClass({
 			contentType: 'application/json',
 			
 			success: function(data) {
+				
 				self.setState({
 					data: data
 				});

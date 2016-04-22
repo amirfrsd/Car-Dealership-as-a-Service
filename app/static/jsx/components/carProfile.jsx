@@ -33,7 +33,9 @@ var CarProfile = React.createClass({
 						</div>
 					}
 					
-				
+				<figure className="image is-4by3">
+  					<img src={this.props.car.img} />
+				</figure>
 				<p><strong>Brand</strong><span className="profile-info"> {this.props.car.brand}</span></p>
 				<p><strong>Model</strong><span className="profile-info"> {this.props.car.model}</span></p>
 				<p><strong>License</strong><span className="profile-info"> {this.props.car.license}</span></p>
@@ -51,7 +53,7 @@ var CarProfile = React.createClass({
 				{this.props.fromSearch ? 
 					<div />
 				:
-					<DeleteModal isDeleting={this.state.isDeleting} handleClick={this.handleClick} carID={this.props.car.id} params={this.props.params} />
+					<DeleteModal isDeleting={this.state.isDeleting} handleClick={this.handleClick} carID={this.props.car.id} changePage={this.props.changePage} params={this.props.params} />
 				}
 			</div>
 		);
