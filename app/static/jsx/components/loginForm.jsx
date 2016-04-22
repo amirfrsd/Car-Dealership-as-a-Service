@@ -45,11 +45,11 @@ var LoginForm = React.createClass({
 				type: this.state.client ? 'client' : 'owner'
 			}),
 			success: function(data){
-				if(data.success)
+				if(data.success){
 					browserHistory.push('/'+data.type+'/'+data.id+'?token='+data.token);
+				}
 			}
 		});
-
 	},
 
 	render: function() {

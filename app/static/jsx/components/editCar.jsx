@@ -32,7 +32,7 @@ var EditCar = React.createClass({
 	    return false;
 	},
 
-	componentWillMount: function() {
+	componentDidMount: function() {
 		this.getDealerships();
 	},
 

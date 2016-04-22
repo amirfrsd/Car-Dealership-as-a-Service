@@ -15,7 +15,7 @@ var ProfilePage = React.createClass({
 		};
 	},
 
-	componentWillMount: function() {
+	componentDidMount: function() {
 		this.getProfileInfo();
 	},
 

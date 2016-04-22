@@ -126,7 +126,7 @@ var CreateCar = React.createClass({
 		});
 	},
 
-	componentWillMount: function() {
+	componentDidMount: function() {
 		let self = this;
 		
 		let serverRequest = $.ajax({

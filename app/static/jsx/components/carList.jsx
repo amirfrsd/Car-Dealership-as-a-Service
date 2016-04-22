@@ -13,7 +13,7 @@ var CarList = React.createClass({
 		};
 	},
 
-	componentWillMount: function() {
+	componentDidMount: function() {
 		this.getCarList();
 	},
 

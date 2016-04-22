@@ -13,7 +13,7 @@ var ClientList = React.createClass({
 		};
 	},
 
-	componentWillMount: function() {
+	componentDidMount: function() {
 		this.getClientList();
 	},
 

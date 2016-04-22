@@ -72,7 +72,7 @@ var DealershipsList = React.createClass({
 		});
 	},
 
-	componentWillMount: function() {
+	componentDidMount: function() {
 		this.getDealershipList(true);
 	},
 

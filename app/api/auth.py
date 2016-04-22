@@ -57,7 +57,7 @@ def login():
 
     if not user or not user.check_password(json_data['password']):
         return jsonify({
-            'success': False
+            'unauthorized': True,
         })
 
     user.auth_token = uuid.uuid4().hex
