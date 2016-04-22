@@ -19,8 +19,8 @@ var App = React.createClass({
                 <Route path="/owner/:id/dealerships" component={DealershipPage}/>
                 <Route path="/owner/:id/cars" component={CarPage}/>
                 <Route path="/owner/:id/clients" component={ClientsPage}/>
-			    <Route path="/:type/:id" component={ProfilePage}/>
-			    <Route path="/:type/:id/search" component={SearchPage}/>
+		<Route path="/:type/:id" component={ProfilePage}/>
+		<Route path="/:type/:id/search" component={SearchPage}/>
             </Router>
         );
     }
