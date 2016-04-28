@@ -39,3 +39,7 @@ Next, we go through the requirements of this assignment.
 19. As a client, I want to search for all the cars within a given kilometer range.
 20. As a client, I want to search for all the cars of a given fuel type.
 21. As a client, I want to combine all the previous queries.
+
+###### To be done:
+* Error handling
+* Improve code structure and modify some components to be more reusable
